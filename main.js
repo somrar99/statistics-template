@@ -1,9 +1,10 @@
 import * as s from './libs/simple-statistics.js';
+import jload from './libs/jload.js';
 import drawGoogleChart from './libs/drawGoogleChart.js';
 import addToPage from './libs/addToPage.js';
 
-
-let data = [1, 2, 3, 4, 5, 6, 8, 8];
+// Usage 
+let data = await jload('test-data.json');
 s.shuffleInPlace(data);
 
 addToPage(`<pre>
