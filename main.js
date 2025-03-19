@@ -3,6 +3,7 @@ import csvLoad from './libs/csvLoad.js';
 import tableFromData from './libs/tableFromData.js';
 import drawGoogleChart from './libs/drawGoogleChart.js';
 import addToPage from './libs/addToPage.js';
+import './libs/liveReload.js';
 
 let data = await csvLoad('smhi-rainfall-temperature-sthm.csv', ';');
 
