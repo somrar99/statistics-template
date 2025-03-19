@@ -26,7 +26,7 @@ export default async function drawGoogleChart({ type, data, element, options }) 
   if (!element) {
     element = document.createElement('div');
     element.classList.add('chart-' + counter++);
-    document.body.append(element);
+    document.querySelector('main').append(element);
   }
   data = typeof data === 'string' ? await (jload('pie-chart-data.json')) : data;
   let chart = new gv[type](element);

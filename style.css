@@ -1,10 +1,20 @@
 body {
   font-size: 20px;
-  line-height: 150%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+p,
+pre {
+  line-height: 150%;
+}
+
 table {
+  width: 100%;
   border: 1px solid #999;
 }
 
