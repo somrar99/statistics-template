@@ -1,4 +1,28 @@
 body {
   font-size: 20px;
   line-height: 150%;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+table {
+  border: 1px solid #999;
+}
+
+thead {
+  background-color: #ddd;
+}
+
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+th,
+td {
+  padding: 5px;
+  text-align: left;
+}
+
+.right {
+  text-align: right;
 }
