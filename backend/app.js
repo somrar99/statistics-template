@@ -10,7 +10,11 @@ const app = express();
 // Serve the files in the main folder
 app.use(express.static(path.join(import.meta.dirname, '..')));
 
-// Route for live reload
+// Start the web server
+app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+
+// Routes for live reload
+app.get('/api/is-real-backend', (_req, res) => res.send(true));
 app.get('/api/reload-if-closes', (_req, res) => {
   res.set({
     'Content-Type': 'text/event-stream',
@@ -18,7 +22,3 @@ app.get('/api/reload-if-closes', (_req, res) => {
   });
   setInterval(() => res.write('data: ping\n\n '), 20000);
 });
-
-// Start the web server
-app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
-
