@@ -1,38 +1,33 @@
-import makeChartFriendly from './libs/makeChartFriendly.js'; './libs/makeChartFriendly.js';
-import csvLoad from './libs/csvLoad.js';
-import tableFromData from './libs/tableFromData.js';
-import drawGoogleChart from './libs/drawGoogleChart.js';
-import addToPage from './libs/addToPage.js';
 import './libs/liveReload.js';
+import addMdToPage from './libs/addMdToPage.js';
+import dbQuery from "./libs/dbQuery.js";
+import tableFromData from './libs/tableFromData.js'
 
-let data = await csvLoad('smhi-rainfall-temperature-sthm.csv', ';');
+addMdToPage(`
+  ## petOwners
+  En tabell över husdjursägare.
+`);
 
-// Filter: Data from the year 2024
-let data2024 = data.filter(x => x.date >= '2024-01' && x.date <= '2024-12');
+let petOwners = await dbQuery('SELECT * FROM petOwners');
+tableFromData({ data: petOwners });
 
-// Display a headline
-addToPage('<h2>Nederbörd och temperaturer i Stockholm,<br>månad för månad 2024</h2>');
 
-// Display a table with the data from the data2024 variable
-tableFromData({ data: data2024, columnNames: ['Datum', 'Nederbörd (mm)', 'Temperatur (°C)'] });
+addMdToPage(`
+  ## pets
+  En tabell över husdjur.
+`);
 
-// Map: Keep date and temperatureC properties/columns (and not the rainFall column)
-let temperatures2024 = data2024.map(({ date, temperatureC }) => ({ date, temperatureC }));
+let pets = await dbQuery('SELECT * FROM pets');
+tableFromData({ data: pets });
 
-// Draw a line chart of temperatures2024
-drawGoogleChart({
-  type: 'LineChart',
-  data: makeChartFriendly(temperatures2024, 'Månad', 'Temperatur (°C)'),
-  options: {
-    title: 'Medeltemperaturer i Stockholm 2024, månad för månad',
-    height: 500,
-    curveType: 'function',
-    chartArea: { left: 80 },
-    hAxis: {
-      slantedText: true,
-      slantedAngle: 45
-    }
-  }
-});
 
-// Can you make a chart that shows rainfall during 2024 here?
+addMdToPage(`
+  ## petOwnersAndPets
+  En vy över vilka husdjursägare som äger vilka husdjur.
+  * Här kan man se vilka husdjursägare som äger vilka husdjur.
+  * Men: Husdjursägare utan husdjur visas inte.
+  * Och: Husdjur ägare utan ägare visas inte heller.
+`);
+
+let petOwnersAndPets = await dbQuery('SELECT * FROM petOwnersAndPets');
+tableFromData({ data: petOwnersAndPets });

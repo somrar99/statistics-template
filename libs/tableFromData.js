@@ -5,10 +5,10 @@ export default function tableFromData({
   data,
   numberFormatLocale = 'sv-SE',
   numberFormatOptions = {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   },
-  columnNames
+  columnNames = []
 }) {
   let nFormat = Intl.NumberFormat(numberFormatLocale, numberFormatOptions);
   // expect all objects to have the same keys, 
