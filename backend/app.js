@@ -55,3 +55,22 @@ app.get('/api/dbquery/:select', (req, res) => {
   }
   res.json(result);
 });
+
+// app get script to start with
+// check for scripts in this order
+// js/_menu.js, js/main.js, main.js
+app.get('/api/getMainScript', (_req, res) => {
+  let mainFolder = path.join(import.meta.dirname, '..');
+  let whichScriptsExists = [
+    { name: '/js/_menu.js', exists: fs.existsSync(path.join(mainFolder, 'js', '_menu.js')) },
+    { name: '/js/main.js', exists: fs.existsSync(path.join(mainFolder, 'js', 'main.js')) },
+    { name: '/main.js', exists: fs.existsSync(path.join(mainFolder, 'main.js')) }
+  ];
+  res.set({ 'Content-Type': 'application/javascript' });
+  res.send(
+    `let whichScriptsExists = ${JSON.stringify(whichScriptsExists, '', '  ')};\n\n` +
+    `let scriptToLoad = whichScriptsExists.find(x => x.exists);\n` +
+    `scriptToLoad.name.includes('menu') && document.body.classList.add('with-menu');\n` +
+    `scriptToLoad && import(scriptToLoad.name);`
+  );
+});

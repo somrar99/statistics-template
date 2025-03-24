@@ -1,7 +1,9 @@
 body {
   font-size: 20px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin-top: 70px !important;
+}
+
+body.with-menu {
+  margin-top: 80px !important;
 }
 
 p,
@@ -27,14 +29,14 @@ p {
   margin-top: 0;
 }
 
-main li {
-  margin-bottom: 12px;
-}
-
 main {
   padding-bottom: 30px;
 }
 
 td.right:nth-child(1) {
   width: 1px;
+}
+
+table {
+  border: 1px solid #000;
 }

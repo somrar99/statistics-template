@@ -21,7 +21,7 @@ export default function tableFromData({
   let html = '<div class="table-responsive"><table class="table table-striped"><thead><tr>';
   html += entries.map(x => `<th class="`
     + (isNaN(x[1]) ? '' : 'right') + `">${x[0]}</th>`).join('');
-  html += '</tr>';
+  html += '</tr><tbody>';
   for (let row of data) {
     html += '<tr>';
     for (let columnValue of Object.values(row)) {
@@ -30,6 +30,6 @@ export default function tableFromData({
     }
     html += '</tr>';
   }
-  html += '</table></div>'
+  html += '</tbody></table></div>'
   addToPage(html);
 }
