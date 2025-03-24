@@ -18,7 +18,7 @@ export default function tableFromData({
   while (columnNames.length) {
     entries[count++][0] = columnNames.shift();
   }
-  let html = '<table><thead><tr>';
+  let html = '<div class="table-responsive"><table class="table table-striped"><thead><tr>';
   html += entries.map(x => `<th class="`
     + (isNaN(x[1]) ? '' : 'right') + `">${x[0]}</th>`).join('');
   html += '</tr>';
@@ -26,9 +26,10 @@ export default function tableFromData({
     html += '<tr>';
     for (let columnValue of Object.values(row)) {
       html += `<td class="`
-        + (isNaN(columnValue) ? '' : 'right') + `">${isNaN(columnValue) ? columnValue : nFormat.format(columnValue)}</td>`;
+        + (isNaN(columnValue) ? '' : 'right') + `">${isNaN(columnValue) ? columnValue : columnValue === null ? null : nFormat.format(columnValue)}</td>`;
     }
     html += '</tr>';
   }
+  html += '</table></div>'
   addToPage(html);
 }

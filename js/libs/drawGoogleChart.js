@@ -32,3 +32,10 @@ export default async function drawGoogleChart({ type, data, element, options }) 
   let chart = new gv[type](element);
   chart.draw(gv.toTable(data), options);
 }
+
+// reload on window resize
+let timeout;
+window.onresize = () => {
+  clearTimeout(timeout);
+  timeout = setTimeout(() => location.reload(), 1000);
+};

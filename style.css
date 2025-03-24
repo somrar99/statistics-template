@@ -1,37 +1,12 @@
 body {
   font-size: 20px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-main {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-bottom: 20px;
+  margin-top: 70px !important;
 }
 
 p,
 pre {
   line-height: 150%;
-}
-
-table {
-  width: 100%;
-  border: 1px solid #999;
-}
-
-thead {
-  background-color: #ddd;
-}
-
-
-tr:nth-child(even) {
-  background-color: #eee;
-}
-
-th,
-td {
-  padding: 5px;
-  text-align: left;
 }
 
 .right {
@@ -45,12 +20,21 @@ h4,
 h5,
 h6 {
   margin-bottom: 3px;
+  margin-top: 20px !important;
 }
 
 p {
   margin-top: 0;
 }
 
-li {
+main li {
   margin-bottom: 12px;
+}
+
+main {
+  padding-bottom: 30px;
+}
+
+td.right:nth-child(1) {
+  width: 1px;
 }
