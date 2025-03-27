@@ -5,10 +5,17 @@ export default function addDropdown(name, label, data, initialValue = '') {
   initialValue = window.dropdownValues[name] || initialValue;
   addToPage(`
     <label class="my-3">
+      <table style="border:0">
+      <tr>
+      <td class="pe-3">
       ${label}: 
+      </td>
+      <td>
       <select name="${name}" class="form-select">
         ${data.map(x => `<option ${initialValue == x ? 'selected' : ''}>${x}</option>`)}
       </select>
+      </td>
+      </table>
     </label>
   `);
   return initialValue || data[0];

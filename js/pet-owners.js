@@ -11,7 +11,6 @@ addMdToPage(`
 let data = await dbQuery('SELECT * FROM data');
 let years = [...new Set(data.map(x => +x.date.slice(0, 4)))];
 let currentYear = addDropdown('years', 'År', years, 2024);
-console.log(currentYear);
 let dataForYear = data.filter(x => x.date.includes(currentYear));
 
 tableFromData({ data: dataForYear });
