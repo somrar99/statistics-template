@@ -9,7 +9,7 @@ let years = (await dbQuery(
   'SELECT DISTINCT year FROM dataWithMonths'
 )).map(x => x.year);
 
-let currentYear = addDropdown('years', 'År', years, 2024);
+let currentYear = addDropdown('År', years, 2024);
 
 addMdToPage(`
   ## Medeltemperaturer i Malmö ${currentYear}
