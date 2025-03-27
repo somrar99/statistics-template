@@ -5,7 +5,8 @@ import makeChartFriendly from './libs/makeChartFriendly.js';
 import * as s from './libs/simple-statistics.js';
 
 let data = await jload('./barometer-data.json');
-addToPage(`<h1>Väljarbarometern februari 2025</h1>`);
+addToPage(`<h2>Väljarbarometern februari 2025</h2>`);
+addToPage(`<p>Några diagram i liknande stil, med samma data, som i <a target="_blank" href="https://demoskop.se/valjarbarometer-februari-2025">denna artikel</a>.`)
 
 // Add summary of blocks
 // -> empty column space
@@ -23,34 +24,90 @@ data.push({
   color: "red"
 });
 
-
 // Add percentages once more as annotations - which shows them above each bar/column
 // Note: The expression with ? and : is a ternary operator! (Shorthand for if-else)
-data = data.map(x => ({ ...x, percentVisible: x.percent ? x.percent.toFixed(1) + '%' : '' }));
+data = data.map(x =>
+  ({ ...x, percentVisible: x.percent ? x.percent.toFixed(1) + '%' : '' }));
 
 // Draw the chart
 drawGoogleChart({
   type: 'ColumnChart',
   data: makeChartFriendly(
     data,
-    "Parti",
-    "Procent",
+    'Parti',
+    'Procent',
     { role: "style" },
-    {
-      type: 'string',
-      role: 'annotation',
-    }
+    { role: 'annotation' }
   ),
   options: {
-    title: 'Partisympatier',
+    title: 'Partisympatier (%)',
     height: 500,
-    // Hide the legend (the small box telling us the unit of the hAxis)
+    // hide the legend (the small box telling us the unit of the hAxis)
     legend: { position: 'none' },
+    // show perctange on y-axis
+    vAxis: { format: '#\'%\'' },
     // set vertical text below columns
     hAxis: {
       slantedTextAngle: 90,
       slantedText: true
     },
+    // left align chart
+    chartArea: { left: '10%' },
+  }
+});
 
+let changeData = await jload('barometer-change-data.json');
+
+// Add percentages once more as annotations - which shows them above each bar/column
+changeData = changeData.map(({
+  party, sinceLastMonth, sinceElection, color
+}) => ({
+  party,
+  sinceLastMonth,
+  slmVisible: sinceLastMonth ? sinceLastMonth.toFixed(1) : '',
+  sinceElection,
+  color,
+  seVisible: sinceElection ? sinceElection.toFixed(1) : '',
+}));
+
+drawGoogleChart({
+  type: 'ColumnChart',
+  data: makeChartFriendly(
+    changeData,
+    'Parti',
+    'Förändring sedan förra månaden (%)',
+    { type: 'string', role: 'annotation' },
+    'Förändring sedan valet (%)',
+    { role: "style" },
+    { role: 'annotation' }
+  ),
+  options: {
+    title: 'Förändring i partisympatier (%), jfr. med förra månad, samt jfr. senaste riksdagsval',
+    height: 500,
+    // color of series 0 (series 1 get it's color from the data)
+    series: { 0: { color: '#dedede' } },
+    // hide the legend (the small box telling us the unit of the hAxis)
+    legend: { position: 'none' },
+    // show perctange on y-axis
+    vAxis: { format: '#\'%\'' },
+    // set vertical text below columns
+    hAxis: {
+      slantedTextAngle: 90,
+      slantedText: true
+    },
+    // left align chart
+    chartArea: { left: '10%' },
+    // look of annotations
+    annotations: {
+      alwaysOutside: true,
+      stem: {
+        color: 'transparent'
+      },
+      textStyle: {
+        color: '#000000',
+        fontSize: 11,
+        bold: true
+      }
+    }
   }
 });

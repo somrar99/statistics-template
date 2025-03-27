@@ -1,0 +1,56 @@
+[
+  {
+    "party": "V",
+    "sinceLastMonth": 0.6,
+    "sinceElection": 1.2,
+    "color": "#bb2a2b"
+  },
+  {
+    "party": "V",
+    "sinceLastMonth": -0.7,
+    "sinceElection": 2.5,
+    "color": "#d9373d"
+  },
+  {
+    "party": "MP",
+    "sinceLastMonth": 0.5,
+    "sinceElection": 1.5,
+    "color": "#9fce63"
+  },
+  {
+    "party": "C",
+    "sinceLastMonth": -0.7,
+    "sinceElection": -2.3,
+    "color": "#3b8658"
+  },
+  {
+    "party": "L",
+    "sinceLastMonth": 0.6,
+    "sinceElection": -1.8,
+    "color": "#59a1d8"
+  },
+  {
+    "party": "M",
+    "sinceLastMonth": -0.3,
+    "sinceElection": 0.6,
+    "color": "#3168af"
+  },
+  {
+    "party": "KD",
+    "sinceLastMonth": 0.2,
+    "sinceElection": -1.3,
+    "color": "#274289"
+  },
+  {
+    "party": "SD",
+    "sinceLastMonth": -0.8,
+    "sinceElection": -1.3,
+    "color": "#f8d447"
+  },
+  {
+    "party": "Öv",
+    "sinceLastMonth": 0.5,
+    "sinceElection": 1,
+    "color": "#cccccc"
+  }
+]
