@@ -6,7 +6,7 @@ import * as s from './libs/simple-statistics.js';
 
 let data = await jload('./barometer-data.json');
 addToPage(`<h2>Väljarbarometern februari 2025</h2>`);
-addToPage(`<p>Några diagram i liknande stil, med samma data, som i <a target="_blank" href="https://demoskop.se/valjarbarometer-februari-2025">denna artikel</a>.`)
+addToPage(`<p>Diagram i liknande stil, från samma data, som i <a target="_blank" href="https://demoskop.se/valjarbarometer-februari-2025">denna artikel</a>.`)
 
 // Add summary of blocks
 // -> empty column space
