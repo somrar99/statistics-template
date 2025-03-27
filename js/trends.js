@@ -18,7 +18,6 @@ addMdToPage(`
 // if year1 > year2 then switch the years
 if (year1 > year2) {
   [year1, year2] = [year2, year1];
-  console.log(year1, year2)
 }
 
 let dataForChart = (await dbQuery(`
@@ -38,7 +37,6 @@ drawGoogleChart({
     curveType: 'function',
     pointSize: 5,
     pointShape: 'circle',
-    hAxis: { direction: -1 },
     vAxis: { format: '# °C' },
     title: `Medeltemperatur per år i Malmö, trend mellan åren ${year1} och ${year2} (°C)`,
     trendlines: { 0: { color: 'green', pointSize: 0 } },
