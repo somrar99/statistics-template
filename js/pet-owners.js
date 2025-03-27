@@ -1,11 +1,17 @@
 import addMdToPage from './libs/addMdToPage.js';
 import dbQuery from "./libs/dbQuery.js";
-import tableFromData from './libs/tableFromData.js'
+import tableFromData from './libs/tableFromData.js';
+import addDropdown from './libs/addDropdown.js';
 
 addMdToPage(`
   ## Ägare
   En tabell över husdjursägare.
 `);
 
-let petOwners = await dbQuery('SELECT * FROM petOwners');
-tableFromData({ data: petOwners });
+let data = await dbQuery('SELECT * FROM data');
+let years = [...new Set(data.map(x => +x.date.slice(0, 4)))];
+let currentYear = addDropdown('years', 'År', years, 2024);
+console.log(currentYear);
+let dataForYear = data.filter(x => x.date.includes(currentYear));
+
+tableFromData({ data: dataForYear });
