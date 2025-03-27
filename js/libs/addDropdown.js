@@ -5,7 +5,7 @@ export default function addDropdown(label, data, initialValue = '') {
   let name = label;
   initialValue = window.dropdownValues[window.hash + '.' + name] || initialValue;
   addToPage(`
-    <label class="my-3">
+    <label class="my-3 me-4">
       <table style="border:0">
       <tr>
       <td class="pe-3">
