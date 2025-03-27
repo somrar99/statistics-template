@@ -11,14 +11,14 @@ let years = (await dbQuery(
 let year1 = addDropdown('År 1', years, 1961);
 let year2 = addDropdown('År 2', years, 2024)
 
-addMdToPage(`
-  ## Hitta trender, från år ${year1} till år ${year2}
-`);
-
 // if year1 > year2 then switch the years
 if (year1 > year2) {
   [year1, year2] = [year2, year1];
 }
+
+addMdToPage(`
+  ## Hitta trender, från år ${year1} till år ${year2}
+`);
 
 let dataForChart = (await dbQuery(`
   SELECT year, AVG(temperatureC) AS avgTemperature 
