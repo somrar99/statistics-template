@@ -2,7 +2,7 @@ import addToPage from "./addToPage.js";
 window.dropdownValues = window.dropdownValues || {};
 
 export default function addDropdown(name, label, data, initialValue = '') {
-  initialValue = window.dropdownValues[name] || initialValue;
+  initialValue = window.dropdownValues[window.hash + '.' + name] || initialValue;
   addToPage(`
     <label class="my-3">
       <table style="border:0">
@@ -24,7 +24,7 @@ export default function addDropdown(name, label, data, initialValue = '') {
 document.body.addEventListener('change', e => {
   let select = e.target.closest('select');
   if (!select) { return; }
-  window.dropdownValues[select.getAttribute('name')] = select.value;
+  window.dropdownValues[window.hash + '.' + select.getAttribute('name')] = select.value;
   document.querySelector('main').innerHTML = '';
   let scriptToReload = document.querySelector('script.page-script');
   let src = scriptToReload.getAttribute('src');

@@ -37,7 +37,7 @@ if (fs.existsSync(databaseToUse)) {
 
 // route for database query (SELECT:s only)
 app.get('/api/dbquery/:select', (req, res) => {
-  let select = req.params.select;
+  let select = req.params.select.trim();
   if (!db) {
     res.json([{ error: 'No database connected!' }]);
     return;

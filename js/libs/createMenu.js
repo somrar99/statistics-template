@@ -61,6 +61,7 @@ function kebabify(str) {
 function hashNav() {
   let menuData = globalThis.menuDataFlat;
   let h = location.hash || '#' + kebabify(menuData[0].name);
+  window.hash = h.slice(1);
   for (let link of [...document.querySelectorAll('header .nav-item a')]) {
     let href = link.getAttribute('href');
     link.classList.remove('active');
