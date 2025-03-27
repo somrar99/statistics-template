@@ -117,16 +117,14 @@ drawGoogleChart({
   data: makeChartFriendly(meanTempsByYear, 'år', '°C'),
   options: {
     ...lineChartOptions,
-    title: 'Medeltemperatur per år i Malmö mellan 1961 och 2024 (°C), med trendlinje'
+    title: 'Medeltemperatur per år i Malmö mellan 1961 och 2024 (°C), med trendlinje',
     trendlines: { 0: { color: 'green', pointSize: 0 } },
     hAxis: { format: "#" } // prevents year to be displayed as numbers
   }
 });
 
-// Note: Convert the years to strings for a prettier display in the table
-console.log(meanTempsByYear.map(x => ({ ...x, year: x.year + '' })))
-
 tableFromData({
   columnNames: ['år', 'medeltemperatur i Malmö (°C)'],
+  // Note: Convert the years to strings for a prettier display in the table
   data: meanTempsByYear.map(x => ({ ...x, year: 'år ' + x.year }))
 });
