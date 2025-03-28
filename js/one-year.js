@@ -4,10 +4,8 @@ import dbQuery from "./libs/dbQuery.js";
 import tableFromData from './libs/tableFromData.js';
 import drawGoogleChart from './libs/drawGoogleChart.js';
 import makeChartFriendly from './libs/makeChartFriendly.js';
+import { years } from './common-vars.js';
 
-let years = (await dbQuery(
-  'SELECT DISTINCT year FROM dataWithMonths'
-)).map(x => x.year);
 
 let currentYear = addDropdown('År', years, 2024);
 
@@ -16,7 +14,8 @@ addMdToPage(`
 `);
 
 let dataForChart = await dbQuery(
-  `SELECT monthNameShort, temperatureC FROM dataWithMonths WHERE year = '${currentYear}'`
+  `SELECT monthNameShort, temperatureC 
+   FROM dataWithMonths WHERE year = '${currentYear}'`
 );
 
 drawGoogleChart({

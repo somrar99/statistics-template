@@ -3,13 +3,10 @@ import addDropdown from './libs/addDropdown.js';
 import dbQuery from "./libs/dbQuery.js";
 import drawGoogleChart from './libs/drawGoogleChart.js';
 import makeChartFriendly from './libs/makeChartFriendly.js';
-
-let years = (await dbQuery(
-  'SELECT DISTINCT year FROM dataWithMonths'
-)).map(x => x.year);
+import { years } from './common-vars.js';
 
 let year1 = addDropdown('År 1', years, 1961);
-let year2 = addDropdown('År 2', years, 2024)
+let year2 = addDropdown('År 2', years, 2024);
 
 // if year1 > year2 then switch the years
 if (year1 > year2) {
