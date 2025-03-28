@@ -25,7 +25,7 @@ let dataForChart = (await dbQuery(`
   FROM dataWithMonths
   WHERE year >= '${year1}' AND year <= '${year2}'
   GROUP BY year 
-`)).map(x => ({ ...x, year: +x.year }));
+`)).map(x => ({ ...x, year: +x.year })); // map to make year a number
 
 drawGoogleChart({
   type: 'LineChart',
