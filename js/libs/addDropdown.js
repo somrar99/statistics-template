@@ -2,7 +2,7 @@ import addToPage from "./addToPage.js";
 window.dropdownValues = window.dropdownValues || {};
 
 export default function addDropdown(label, data, initialValue = '') {
-  let name = label;
+  let name = 'sel' + (document.querySelectorAll('main select').length + 1);
   initialValue = window.dropdownValues[window.hash + '.' + name] || initialValue;
   addToPage(`
     <label class="my-3 me-4">
