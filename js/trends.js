@@ -40,7 +40,7 @@ drawGoogleChart({
     vAxis: { format: '# °C' },
     title: `Medeltemperatur per år i Malmö, trend mellan åren ${year1} och ${year2} (°C)`,
     trendlines: { 0: { color: 'green', pointSize: 0 } },
-    hAxis: { format: "#" } // prevents year to be displayed as numbers
+    hAxis: { format: "#" } // prevents years to be displayed as numbers
   }
 });
 

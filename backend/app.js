@@ -74,3 +74,7 @@ app.get('/api/getMainScript', (_req, res) => {
     `scriptToLoad && import(scriptToLoad.name);`
   );
 });
+
+app.get('/api/chartSettings', (_req, res) => {
+  res.sendFile()
+});

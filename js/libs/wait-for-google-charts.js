@@ -4,10 +4,13 @@
 // + provide shorthand alias for google.vizualization - gv
 //   and google.vizualization.arrayToDataTable - gv.toTable
 
+import jload from "./jload.js";
+
 let gv;
-function waiter() {
+async function waiter() {
+  let settings = await jload('chartSettings.json');
   return new Promise(resolve => {
-    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.load('current', settings);
     google.charts.setOnLoadCallback(() => {
       gv = google.visualization;
       gv.toTable = gv.arrayToDataTable;
