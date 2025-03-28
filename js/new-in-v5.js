@@ -1,30 +1,13 @@
-import addMdToPage from './libs/addMdToPage.js';
-import addDropdown from './libs/addDropdown.js';
+import jerzy from './libs/jerzy.js';
 
-addMdToPage(`
-  ## Nytt i version 5 av mallen
-  Nytt i version 5 av mallen är att vi kan visa och läsa av dropdowns med hjälp av funktionen **addDropdown**.
+console.log(jerzy);
 
-  Detta kan t.ex. användas för att filtrera data på olika sätt och därmed ge en mer interaktiv visning av data.
-  
-  ### Ett exempel
-`);
+let data = [18, 160, 234, 149, 145, 107, 197, 75, 201, 225, 211, 119,
+  157, 145, 107, 244, 163, 114, 145, 68, 111, 185, 202, 146,
+  203, 224, 213, 104, 178, 166, 187, 154, 177, 95, 185, 50, 110,
+  216, 138, 151, 166, 135, 155, 84, 248, 173, 131, 207, 121, 135];
 
-let gender = addDropdown('Kön', ['samtliga', 'kvinnor', 'män']);
+let v = new jerzy.Vector(data);
+console.log(jerzy.Normality.shapiroWilk(v).p);
 
-if (gender == 'samtliga') {
-  addMdToPage(`Här hade vi kunnat visa data om samtliga respondenter i en undersökning.`);
-}
-else if (gender == 'kvinnor') {
-  addMdToPage(`Här hade vi kunnat visa data om endast kvinnor.`);
-}
-else {
-  addMdToPage(`Här hade vi kunnat visa data om endast män.`);
-}
-
-addMdToPage(`
-  ### Titta på övriga sidor genom att välja dem i menyn!
-  På övriga sidor har vi fler exempel på hur dropdown ka användas.
-
-  Där används de för att låta användaren filtrerera på år i data om temperaturer i Malmö!
-`);
+console.log(jerzy.StudentT.test(v, 170).p);
