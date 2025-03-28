@@ -26,5 +26,5 @@ addMdToPage(`
   ### Titta på övriga sidor genom att välja dem i menyn!
   På övriga sidor har vi fler exempel på hur dropdown ka användas.
 
-  Där används de för att låta användaren filtrerera på år i data om temperaturer i Malmö!
+  Där används de för att låta användaren filtrera på år i data om temperaturer i Malmö!
 `);
