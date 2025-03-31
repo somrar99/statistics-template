@@ -1,45 +1,23 @@
-import addMdToPage from './libs/addMdToPage.js';
-import addDropdown from './libs/addDropdown.js';
-import dbQuery from "./libs/dbQuery.js";
-import tableFromData from './libs/tableFromData.js';
-import drawGoogleChart from './libs/drawGoogleChart.js';
-import makeChartFriendly from './libs/makeChartFriendly.js';
+import csvLoad from './libs/csvLoad.js';
 
-let years = (await dbQuery(
-  'SELECT DISTINCT year FROM dataWithMonths'
-)).map(x => x.year);
+let data = await csvLoad('smoking-health.csv');
 
-let currentYear = addDropdown('År', years, 2024);
+let smokingStatuses = [...new Set(data.map(x => x.smoking_status))];
 
-addMdToPage(`
-  ## Medeltemperaturer i Malmö ${currentYear}
-`);
+console.log(smokingStatuses);
 
-let dataForChart = await dbQuery(
-  `SELECT monthNameShort, temperatureC FROM dataWithMonths WHERE year = '${currentYear}'`
-);
+let smokingStatusCount = smokingStatuses.map(status => ({
+  status,
+  count: data.filter(x => x.smoking_status == status).length
+}));
 
-drawGoogleChart({
-  type: 'LineChart',
-  data: makeChartFriendly(dataForChart, 'månad', '°C'),
-  options: {
-    height: 500,
-    width: 1250,
-    chartArea: { left: 50 },
-    curveType: 'function',
-    pointSize: 5,
-    pointShape: 'circle',
-    vAxis: { format: '# °C' },
-    title: `Medeltemperatur per månad i Malmö ${currentYear} (°C)`
-  }
-});
+console.log(smokingStatusCount);
 
-// the same db query as before, but with the long month names
-let dataForTable = await dbQuery(
-  `SELECT monthName, temperatureC FROM dataWithMonths WHERE year = '${currentYear}'`
-);
+let smokers = data.filter(x => x.smoking_status == 'currently smokes' || x.smoking_status == 'previously smoked');
+let nonSmokers = data.filter(x => x.smoking_status == 'never smoked');
+let unclear = data.filter(x => x.smoking_status == '0');
 
-tableFromData({
-  data: dataForTable,
-  columnNames: ['Månad', 'Medeltemperatur (°C)']
-});
+console.log('smokers - how many?', smokers.length);
+console.log('non smokers - how many?', nonSmokers.length);
+console.log('unclear - how many?', unclear.length);
+
