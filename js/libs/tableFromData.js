@@ -23,7 +23,7 @@ export default function tableFromData({
   entries.forEach(x => x[0] = x[0].replaceAll('-', '&#8209;'));
   let id = (Math.random() + '').replace('0.', 't');
   let html = `<div class="table-responsive"><table id=${id} class="table table-striped"><thead><tr>`;
-  html += entries.map(x => `<th class="`
+  html += entries.map(x => `<th class="align-top `
     + (isNaN(parseFloat(x[1])) ? '' : 'right') + `">${x[0]}</th>`).join('');
   html += '</tr><tbody>';
   for (let row of data) {

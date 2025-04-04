@@ -38,10 +38,10 @@ export function chooseGroupPlusOutlierFiltering(dropdownLabel, groups, chosen1, 
 
   // Filter outliers according to dropdown choice
   let filtered =
-    filterOutliers.includes('standardavvikelse') ? trimByStdDev(generalHealth) :
-      filterOutliers.includes('5% percentiler') ? trimByPercentiles(generalHealth) :
-        filterOutliers.includes('10% percentiler') ? trimByPercentiles(generalHealth, 10) :
-          { data: generalHealth, outliers: [] };
+    filterOutliers.includes('standardavvikelse') ? trimByStdDev(generalHealth)
+    : filterOutliers.includes('5% percentiler') ? trimByPercentiles(generalHealth)
+    : filterOutliers.includes('10% percentiler') ? trimByPercentiles(generalHealth, 10)
+    : { data: generalHealth, outliers: [] };
 
   // Perform Shapiro-Wilk-test and give a text warning if not normal distribution
   let judge = stdLib.stats.shapiroWilkTest(filtered.data).p < 0.05 ? '*&ndash; ej normalfördelning*' : '';

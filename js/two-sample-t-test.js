@@ -55,8 +55,9 @@ tableFromData({
     'T-värde': result.statistic,
     'p-värde': result.pValue,
     'Signifikant skillnad': result.rejected ? `Ja, grupp ${result.xmean > result.ymean ? 1 : 2} mår lite bättre` : 'Nej',
-    'Grupp 1, medel': result.xmean.toFixed(1) + ' ± ' + stdDev1.toFixed(1),
-    'Grupp 2, medel': result.ymean.toFixed(1) + ' ± ' + stdDev2.toFixed(1)
+    'Normalfördelat?': 'hepp',
+    'Grupp&nbsp;1, medel': result.xmean.toFixed(1) + ' ± ' + stdDev1.toFixed(1),
+    'Grupp&nbsp;2, medel': result.ymean.toFixed(1) + ' ± ' + stdDev2.toFixed(1)
   }]
 });
 
