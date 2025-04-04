@@ -27,6 +27,7 @@ if (showExplanation === 'Ja') {
   * **w-värdet** *${result.w.toFixed(2)}* indikerar  ${result.w > 0.8 ? '' : 'inte'}  en normalfördelning
   * ${result.w > 0.8 && result.p >= 0.05 ? 'och' : 'men'} **p-värdet** *${result.p.toFixed(2)}* 
   ${result.p >= 0.05 ? 'bekräftar' : 'förkastar'} att detta är en normalfördelning (p ${result.p >= 0.05 ? '>=' : '<'} α,  α = 0.05)
+  
   **Notera**: Shapiro-Wilk för större urval är mycket känsligt för avvikelser även om datan är ganska nära normalfördelning! [Se denna länk](https://math.stackexchange.com/questions/3124839/interpretation-of-the-p-value-and-the-test-statistic-w-of-the-shapiro-test-in-r).
   `);
 }

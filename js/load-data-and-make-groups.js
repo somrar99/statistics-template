@@ -16,7 +16,7 @@ export let basicGroups = [
   { label: 'har ej besvarat frågan', data: rawData.filter(x => x.smoking_status == 0) },
   { label: 'rökare (för närvarande)', data: data.filter(x => x.smoking_status == 'currently smokes') },
   { label: 'före detta rökare', data: data.filter(x => x.smoking_status == 'previously smoked') },
-  { label: 'icke rökare (aldrig rökt)', data: data.filter(x => x.smoking_status == 'never smoked') },
+  { label: 'icke-rökare (aldrig rökt)', data: data.filter(x => x.smoking_status == 'never smoked') },
 ]
 
 // Basic groups count (for pie chart)

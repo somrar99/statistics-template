@@ -13,7 +13,7 @@ addMdToPage(`
 
   Anledningen är att T-test bara är tillförlitliga på normalfördelad data och syftet med detta exempel är att visa hur **Shapiro-Wilks-test** och **tvåsidiga T-test** fungerar!
 
-  Det finns många fler variabler i datasetet än den enda vi har tittat på - **general_health**.
+  Det finns många fler variabler i datasetet än de enda två vi har tittat på - **smoking_status** och **general_health**.
 
   [Du kan ladda ner den modifierade versionen vi använder här](smokinghealth.csv).
 `);

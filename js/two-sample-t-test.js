@@ -18,7 +18,7 @@ if (showExplanation === 'Ja') {
   addMdToPage(` 
   Ett [tvåsidigt T-test](https://sv.wikipedia.org/wiki/T-test) (**two-sample t-test**) jämför om medelvärdet på en variabel mätt i två olika populationer (eller i vårt fall om två olika strata/grupper från ett stickprov) är lika. 
   * Vår **nollhypotes** är att de är lika, dvs. *ingen statistiskt säkerställd skillnad* existerar mellan grupperna.
-  * Vår **alternativhypotes** ör att det finns en skillnad mellan grupperna.
+  * Vår **alternativhypotes** är att det finns en skillnad mellan grupperna.
   * Om **p-värdet** från T-testet är mindre än [signifikansnivån](https://www.statistiskordbok.se/ord/signifikansniva) (som vi valt att sätta till  α = 0.05), så förkastar vi nollhypotesen. (**p < α**) 
   * Har vi förkastat **nollhypotesen** är alternativhypotesen sann, dvs. vi har en **statistiskt signifikant skillnad**!
   
@@ -27,7 +27,7 @@ if (showExplanation === 'Ja') {
   * *Alternativhypotes* - nollhypotesen är falsk, dvs. det finns en statistiskt säkerställd skillnad mellan självskattad allmänhälsa i de två grupperna.
   * Vi kan också gå längre och ha en alternativhypotes där vi förutspår åt vilket håll skillnaden ska ligga (t.ex. anta att medelvärdet för självskattad hälsa ska vara högre hos icke-rökare). I så fall måste vi kolla att riktningen stämmer!
   
-  Är *p <  α* och  α = 0.05, så finns det mer än en 1/20-dels (5%) chans att nollhypotesen kan stämma och då vågar vi inte förkasta den.
+  **Notera**: För att T-test ska vara tillförlitliga behöver de utföras på normalfördelat material!
 `);
 }
 
@@ -37,7 +37,7 @@ let healthGroup1 = helpers.chooseGroupPlusOutlierFiltering(
   'Grupp 1', groups, 'rökare (för närvarande)', 'Nej, ta bort mer än ± 3 x standardavvikelse'
 ).data.filter(x => x > 0);
 let healthGroup2 = helpers.chooseGroupPlusOutlierFiltering(
-  'Grupp 2', groups, 'icke rökare (aldrig rökt)', 'Nej, ta bort mer än ± 3 x standardavvikelse'
+  'Grupp 2', groups, 'icke-rökare (aldrig rökt)', 'Nej, ta bort mer än ± 3 x standardavvikelse'
 ).data.filter(x => x > 0);
 
 // Perform T-test
