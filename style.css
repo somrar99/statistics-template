@@ -1,9 +1,14 @@
 body {
-  font-size: 20px;
+  font-size: 18px !important;
+  background-color: #efe9d3 !important;
+}
+
+body.bigBottomPad {
+  padding-bottom: 2000px;
 }
 
 body.with-menu {
-  margin-top: 80px !important;
+  margin-top: 90px !important;
 }
 
 p,
@@ -39,4 +44,8 @@ td.right:nth-child(1) {
 
 table {
   border: 1px solid #000;
+}
+
+label.dropdown+label.dropdown {
+  margin-top: -20px !important;
 }

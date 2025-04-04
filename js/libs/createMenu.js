@@ -1,4 +1,5 @@
 import './liveReload.js';
+import reloadPageScript from './reloadPageScript.js';
 
 export default function createMenu(siteName, menuData) {
   // add slugs
@@ -70,17 +71,10 @@ function hashNav() {
       link.closest('.nav-item').querySelector('.nav-link').classList.add('active');
     }
   }
-  // empty main area
-  document.querySelector('main').innerHTML = '';
   // load script
   let src = '/js/' + ((menuData.find(x => x.slug === h) || {}).script || '') + '?' + Math.random();
-  let scriptTag = document.createElement('script');
-  scriptTag.classList.add('page-script');
-  scriptTag.setAttribute('type', 'module');
-  scriptTag.setAttribute('src', src);
-  let oldScriptTag = document.querySelector('.page-script');
-  oldScriptTag && oldScriptTag.remove();
-  document.body.append(scriptTag);
+  reloadPageScript(src);
+  window.scroll(0, 0);
   // close navbar
   let nbToggler = document.querySelector('.navbar-toggler');
   nbToggler.getAttribute('aria-expanded') === 'true' && nbToggler.click();

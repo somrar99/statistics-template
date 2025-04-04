@@ -1,11 +1,13 @@
 import addToPage from "./addToPage.js";
-window.dropdownValues = window.dropdownValues || {};
+import reloadPageScript from "./reloadPageScript.js";
+
+globalThis.dropdownValues = globalThis.dropdownValues || {};
 
 export default function addDropdown(label, data, initialValue = '') {
   let name = 'sel' + (document.querySelectorAll('main select').length + 1);
   initialValue = window.dropdownValues[window.hash + '.' + name] || initialValue;
   addToPage(`
-    <label class="my-3 me-4">
+    <label class="my-3 me-4 dropdown">
       <table style="border:0">
       <tr>
       <td class="pe-3">
@@ -22,18 +24,9 @@ export default function addDropdown(label, data, initialValue = '') {
   return initialValue || data[0];
 }
 
-document.body.addEventListener('change', e => {
+globalThis.document && document.body.addEventListener('change', e => {
   let select = e.target.closest('select');
   if (!select) { return; }
-  window.dropdownValues[window.hash + '.' + select.getAttribute('name')] = select.value;
-  document.querySelector('main').innerHTML = '';
-  let scriptToReload = document.querySelector('script.page-script');
-  let src = scriptToReload.getAttribute('src');
-  src = src.split('?')[0] + '?' + Math.random();
-  scriptToReload.remove();
-  let newScript = document.createElement('script');
-  newScript.setAttribute('type', 'module');
-  newScript.classList.add('page-script');
-  newScript.setAttribute('src', src);
-  document.body.append(newScript);
+  globalThis.dropdownValues[window.hash + '.' + select.getAttribute('name')] = select.value;
+  reloadPageScript();
 });

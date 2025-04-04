@@ -18,7 +18,8 @@
 
 import gv from './/wait-for-google-charts.js';
 import jload from './jload.js';
-import $ from './/shorthand-query-selector.js'
+import $ from './/shorthand-query-selector.js';
+import reloadPageScript from "./reloadPageScript.js";
 
 let counter = 1;
 export default async function drawGoogleChart({ type, data, element, options }) {
@@ -37,5 +38,5 @@ export default async function drawGoogleChart({ type, data, element, options }) 
 let timeout;
 window.onresize = () => {
   clearTimeout(timeout);
-  timeout = setTimeout(() => location.reload(), 1000);
+  timeout = setTimeout(() => reloadPageScript(), 1000);
 };
