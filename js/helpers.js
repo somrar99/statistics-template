@@ -44,12 +44,14 @@ export function chooseGroupPlusOutlierFiltering(dropdownLabel, groups, chosen1, 
     : { data: generalHealth, outliers: [] };
 
   // Perform Shapiro-Wilk-test and give a text warning if not normal distribution
-  let judge = stdLib.stats.shapiroWilkTest(filtered.data).p < 0.05 ? '*&ndash; ej normalfördelning*' : '';
+  let normalDist = stdLib.stats.shapiroWilkTest(filtered.data).p >= 0.05;
+  let judge = !normalDist ? '*&ndash; ej normalfördelning*' : '';
 
   // Show how many outliers the filtering removed
   addMdToPage(`Antal: **${filtered.data.length}** ${generalHealth.length === filtered.data.length ? ''
     : `(Ursprungligen **${generalHealth.length}**, antal borttagna extremvärden: **${filtered.outliers.length}**)`}
    ${judge}`);
-
+  
+  filtered.normalDist = normalDist;
   return filtered;
 }

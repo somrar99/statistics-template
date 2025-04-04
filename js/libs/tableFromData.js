@@ -30,7 +30,7 @@ export default function tableFromData({
     html += '<tr>';
     for (let columnValue of Object.values(row)) {
       html += `<td class="`
-        + (isNaN(parseFloat(columnValue)) ? '' : 'right') + `">${isNaN(columnValue) ? columnValue : columnValue === null ? null : nFormat.format(columnValue)}</td>`;
+        + (isNaN(parseFloat(columnValue)) ? '' : 'right') + `">${isNaN(columnValue) || columnValue==='' ? columnValue : columnValue === null ? null : nFormat.format(columnValue)}</td>`;
     }
     html += '</tr>';
   }

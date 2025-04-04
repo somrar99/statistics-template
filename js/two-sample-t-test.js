@@ -33,12 +33,15 @@ if (showExplanation === 'Ja') {
 
 // Dropdowns for choice of group + filtering of outliers
 addMdToPage('### Välj två grupper att jämföra:');
-let healthGroup1 = helpers.chooseGroupPlusOutlierFiltering(
+let filtered1 = helpers.chooseGroupPlusOutlierFiltering(
   'Grupp 1', groups, 'rökare (för närvarande)', 'Nej, ta bort mer än ± 3 x standardavvikelse'
-).data.filter(x => x > 0);
-let healthGroup2 = helpers.chooseGroupPlusOutlierFiltering(
+);
+let filtered2 = helpers.chooseGroupPlusOutlierFiltering(
   'Grupp 2', groups, 'icke-rökare (aldrig rökt)', 'Nej, ta bort mer än ± 3 x standardavvikelse'
-).data.filter(x => x > 0);
+);
+let nonNormalDist = (filtered1.normalDist ? 0 : 1) + (filtered2.normalDist ? 0 : 1);
+let healthGroup1 = filtered1.data;
+let healthGroup2 = filtered2.data;
 
 // Perform T-test
 let result = stdLib.stats.ttest2(healthGroup1, healthGroup2);
@@ -54,12 +57,14 @@ tableFromData({
   data: [{
     'T-värde': result.statistic,
     'p-värde': result.pValue,
-    'Signifikant skillnad': result.rejected ? `Ja, grupp ${result.xmean > result.ymean ? 1 : 2} mår lite bättre` : 'Nej',
-    'Normalfördelat?': 'hepp',
+    'Signifikant skillnad': result.rejected ? `Ja, grupp ${result.xmean > result.ymean ? 1 : 2} mår lite bättre.` : 'Nej',
+    'Normalfördelat?': nonNormalDist == 0 ? 'Ja' : 'Nej, bör ej T-testas.',
     'Grupp&nbsp;1, medel': result.xmean.toFixed(1) + ' ± ' + stdDev1.toFixed(1),
     'Grupp&nbsp;2, medel': result.ymean.toFixed(1) + ' ± ' + stdDev2.toFixed(1)
   }]
 });
+
+console.log(nonNormalDist == 0 ? '' : nonNormalDist + ' ej normalfördelade urval')
 
 // Min & max for gauges, the joint mean for the two groups +/i 2 * stdDev, 
 // covers 95% of respondents
