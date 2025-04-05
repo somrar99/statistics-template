@@ -10,6 +10,8 @@ console.log("original data:", data)
 s.shuffleInPlace(data);
 console.log("after shuffle: ",data)
 
+
+
 addToPage(`<pre>
 
   Data: ${data}
@@ -21,8 +23,10 @@ addToPage(`<pre>
 
   Medelvärde: ${s.mean(data).toFixed(2)}
   Median: ${s.median(data)}
-  Typvärde: ${s.mode(data)}
+  Typvärde(mode): ${s.mode(data)}
+  Typvärde(modefast): ${s.modeFast(data)}
 
+  sorted data: ${data.sort()}
   Första kvartil: ${s.quantile(data, 0.25)}
   Andra kvartil: ${s.quantile(data, 0.5)} (samma som median)
   Tredje kvartil:  ${s.quantile(data, 0.75)}
