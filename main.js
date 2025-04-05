@@ -5,7 +5,10 @@ import addToPage from './libs/addToPage.js';
 
 // Usage 
 let data = await jload('test-data.json');
+console.log("original data:", data)
+
 s.shuffleInPlace(data);
+console.log("after shuffle: ",data)
 
 addToPage(`<pre>
 
