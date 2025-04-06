@@ -72,6 +72,9 @@ addToPage(`<pre>
   Den yngsta mannen:                  ${s.min(agesMen)}
   Den äldsta mannen:                  ${s.max(agesMen)}
 
+  Antal kvinnor:                      ${women.length}
+  Antal män:                          ${men.length}
+
   Medianålder för samtliga:           ${s.median(ages)}
   Medelålder för samtliga:            ${s.mean(ages).toFixed(1)} (sd: ${s.sampleStandardDeviation(ages).toFixed(1)})
 
@@ -90,6 +93,11 @@ addToPage(`<pre>
 
   Medianlön för män:                  ${s.median(salariesMen).toFixed(0)} 
   Medellön för män:                   ${s.mean(salariesMen).toFixed(0)} (sd: ${s.sampleStandardDeviation(salariesMen).toFixed(0)})
+
+  <b>Slutsater om kön</b>
+  Vi kan konstatera att kön har betydelse för lönenivån,
+  med en skillnad i medellön på 4 261 SEK och i medianlön på 4 943 SEK, till männens fördel.
+
 
   <b>Åldersgruppsindelning</b>
   Antal respondenter 18-32 år:        ${ageGroup18_32.length}
@@ -126,6 +134,17 @@ addToPage(`<pre>
   Medianlön för män 51-64 år:         ${s.median(salariesAgeGroupMen51_64).toFixed(0)}
   Medellön för män 51-64 år:          ${s.mean(salariesAgeGroupMen51_64).toFixed(0)} (sd: ${s.sampleStandardDeviation(salariesAgeGroupMen51_64).toFixed(0)})
   
+  <b>Slutsater om ålder</b>
+  Vi delade in respondenterna i 3 åldersgrupper (18-32 år: 322 st, 33-50 år: 386 st, 51-64 år: 292 st)
+  och kan konstatera att lönerna ökar med ålder,med nästa dubbelt så höga medellön i gruppen 51-64 år (73 913 SEK), 
+  jämfört med gruppen 18-32 år (37 983 SEK).
+
+  Även lönespridningen ökar markant med ålder (från 12 993 SEK i standardavvikelse i den yngsta gruppen till 27 019 SEK i den äldsta).
+  
+  Vad gäller korrelationen lön och ålder ser vi en liknande utveckling oavsett kön, om vi tittar på endast kvinnor, respektive endast män,
+  inom olika åldersgrupper kvarstår faktum att medellönerna är nästan dubbelt så höga i gruppen 51-64 år, jämfört med gruppen 18-32 år.
+
+
   <b>Löner och regioner, samtliga</b>
   Medianlön för samtliga, Malmö:      ${s.median(salariesRegionMo).toFixed(0)}
   Medellön för samtliga, Malmö:       ${s.mean(salariesRegionMo).toFixed(0)} (sd: ${s.sampleStandardDeviation(salariesRegionMo).toFixed(0)})
@@ -156,42 +175,20 @@ addToPage(`<pre>
   Medianlön för män, Stockholm:       ${s.median(salariesMenRegionSthm).toFixed(0)}
   Medellön för män, Stockholm:        ${s.mean(salariesMenRegionSthm).toFixed(0)} (sd: ${s.sampleStandardDeviation(salariesMenRegionSthm).toFixed(0)})
  
-  <b>Slutsatser</b>
-  Vi kan konstatera att kön har betydelse för lönenivån, 
-  med en skillnad i medellön på 4 261 SEK och 
-  i medianlön på 4 943 SEK, till männens fördel.
-
-  Vi delade in respondenterna i 3 åldersgrupper
-  (18-32 år, 322 st, 33-50 år, 386 st, 51-64 år, 292 st)
-  och kan konstatera att lönerna ökar med ålder,
-  med nästa dubbelt så höga medellön i gruppen 51-64 år (73 913 SEK),
-  jämfört med gruppen 18-32 år (37 983 SEK).
-
-  Även lönespridningen ökar markant med ålder (från 12 993 SEK i 
-  standardavvikelse i den yngsta gruppen till 27 019 SEK i den äldsta).
-  
-  Vad gäller korrelationen lön och ålder ser vi en liknande utveckling 
-  oavsett kön, om vi tittar på endast kvinnor, respektive endast män,
-  inom olika åldersgrupper kvarstår faktum att medellönerna är nästan
-  dubbelt så höga i gruppen 51-64 år, jämfört med gruppen 18-32 år.
-
-  Vad gäller de olika regionerna (Malmö-, Göteborg- och Stockholmsregionen)
-  inverkan på lönerna är skillnaderna mellan Malmö och Göteborg relativt små,
+  <b>Slutsatser om regioner</b>
+  Vad gäller de olika regionerna (Malmö-, Göteborg- och Stockholmsregionen) inverkan på lönerna är skillnaderna mellan Malmö och Göteborg relativt små,
   med bara aningen högre löner i Göteborg.
 
-  Det är däremot en tydlig skillnad mellan Stockholm och övriga regioner.
-  Medellönen för Stockholmsregionen är 4 870 SEK högre än för Malmöregionen.
-  Standardavvikelserna är likartade (vilket innebär att extremvärden inte
-  verkar snedvrida jämförelsen).
+  Det är däremot en tydlig skillnad mellan Stockholm och övriga regioner. Medellönen för Stockholmsregionen är 4 870 SEK högre än för Malmöregionen.
+  Standardavvikelserna är likartade (vilket innebär att extremvärden inte verkar snedvrida jämförelsen).
 
-  Sammanfattningsvis kan sägas att ålder verkar ha störst betydelse för lön,
-  och att kön och vilken storstadsregion verkar ha ungefär lika stor betydelse.
 
-  Det vore därmed ganska troligt att två jämngamla IT-utvecklare, en manlig
-  verksam i Malmö och en kvinnlig verksam i Stockholm har liknande lön.
+  <b>Slutsatser</b>
+  Sammanfattningsvis kan sägas att ålder verkar ha störst betydelse för lön, och att kön och vilken storstadsregion verkar ha ungefär lika stor betydelse.
 
-  Den IT-utvecklare som tjänar sämst är en ung kvinna i Malmö-regionen 
-  och den som tjänar bäst är en äldre man i Stockholms-regionen...
+  Det vore därmed ganska troligt att två jämngamla IT-utvecklare, en manlig verksam i Malmö och en kvinnlig verksam i Stockholm har liknande lön.
+
+  Den IT-utvecklare som tjänar sämst är en ung kvinna i Malmö-regionen och den som tjänar bäst är en äldre man i Stockholms-regionen.
   
 </pre>`)
 
