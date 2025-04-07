@@ -4,9 +4,9 @@ import fs from 'fs';
 import path from 'path';
 
 // Port to start the web server on
-const port = 3005
+const port = 3005;
 
-// Create a web server 
+// Create a web server
 const app = express();
 
 // Serve the files in the main folder
@@ -52,7 +52,7 @@ if (fs.existsSync(dbFolder)) {
   // Read settings for which SQLite-database to use
   let databaseToUse = fs.readFileSync(path.join(dbFolder, 'database-in-use.json'), 'utf-8').slice(1, -1);
   databaseToUse = path.join(path.join(dbFolder, databaseToUse));
-  // databse connection
+  // database connection
   let db;
   if (fs.existsSync(databaseToUse)) {
     db = new Database(databaseToUse);
@@ -71,10 +71,10 @@ if (fs.existsSync(dbFolder)) {
     }
     let result;
     try {
-      result = db.prepare(select).all()
+      result = db.prepare(select).all();
     }
     catch (e) {
-      result = [{ error: e + '' }]
+      result = [{ error: e + '' }];
     }
     res.json(result);
   });

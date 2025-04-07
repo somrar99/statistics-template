@@ -30,8 +30,7 @@ drawGoogleChart({
   data: makeChartFriendly(dataForChart, 'månad', `°C ${year1}`, `°C ${year2}`),
   options: {
     height: 500,
-    width: 1250,
-    chartArea: { left: 50 },
+    chartArea: { left: 50, right: 0 },
     curveType: 'function',
     pointSize: 5,
     pointShape: 'circle',
