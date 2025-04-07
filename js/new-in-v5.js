@@ -6,7 +6,7 @@ addMdToPage(`
   Nytt i version 5 av mallen är bl.a. att vi kan visa och läsa av dropdowns med hjälp av funktionen **addDropdown**.
 
   Detta kan t.ex. användas för att filtrera data på olika sätt och därmed ge en mer interaktiv visning av data.
-  
+
   ### Ett exempel
 `);
 

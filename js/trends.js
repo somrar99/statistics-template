@@ -9,7 +9,7 @@ let years = (await dbQuery(
 )).map(x => x.year);
 
 let year1 = addDropdown('År 1', years, 1961);
-let year2 = addDropdown('År 2', years, 2024)
+let year2 = addDropdown('År 2', years, 2024);
 
 // if year1 > year2 then switch the years
 if (year1 > year2) {
@@ -21,10 +21,10 @@ addMdToPage(`
 `);
 
 let dataForChart = (await dbQuery(`
-  SELECT year, AVG(temperatureC) AS avgTemperature 
+  SELECT year, AVG(temperatureC) AS avgTemperature
   FROM dataWithMonths
   WHERE year >= '${year1}' AND year <= '${year2}'
-  GROUP BY year 
+  GROUP BY year
 `)).map(x => ({ ...x, year: +x.year })); // map to make year a number
 
 drawGoogleChart({

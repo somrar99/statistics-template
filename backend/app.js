@@ -22,39 +22,9 @@ app.get('/api/reload-if-closes', (_req, res) => {
     'Content-Type': 'text/event-stream',
     'Cache-control': 'no-cache'
   });
-  setInterval(() => res.write('data: ping\n\n '), 20000);
+  setInterval(() => res.write('data: ping\n\n'), 20000);
 });
 
-// Read settings for which SQLite-database to use
-let dbFolder = path.join(import.meta.dirname, '..', 'sqlite-databases');
-let databaseToUse = fs.readFileSync(path.join(dbFolder, 'database-in-use.json'), 'utf-8').slice(1, -1);
-databaseToUse = path.join(path.join(dbFolder, databaseToUse));
-// databse connection
-let db;
-if (fs.existsSync(databaseToUse)) {
-  db = new Database(databaseToUse);
-}
-
-// route for database query (SELECT:s only)
-app.get('/api/dbquery/:select', (req, res) => {
-  let select = req.params.select.trim();
-  if (!db) {
-    res.json([{ error: 'No database connected!' }]);
-    return;
-  }
-  if ((select + '').toLowerCase().indexOf('select ') !== 0) {
-    res.json([{ error: 'Only SELECT queries can be run!' }]);
-    return;
-  }
-  let result;
-  try {
-    result = db.prepare(select).all()
-  }
-  catch (e) {
-    result = [{ error: e + '' }]
-  }
-  res.json(result);
-});
 
 // app get script to start with
 // check for scripts in this order
@@ -75,6 +45,38 @@ app.get('/api/getMainScript', (_req, res) => {
   );
 });
 
-app.get('/api/chartSettings', (_req, res) => {
-  res.sendFile()
-});
+// Only if dbFolder exists
+let dbFolder = path.join(import.meta.dirname, '..', 'sqlite-databases');
+if (fs.existsSync(dbFolder)) {
+
+  // Read settings for which SQLite-database to use
+  let databaseToUse = fs.readFileSync(path.join(dbFolder, 'database-in-use.json'), 'utf-8').slice(1, -1);
+  databaseToUse = path.join(path.join(dbFolder, databaseToUse));
+  // databse connection
+  let db;
+  if (fs.existsSync(databaseToUse)) {
+    db = new Database(databaseToUse);
+  }
+
+  // route for database query (SELECT:s only)
+  app.get('/api/dbquery/:select', (req, res) => {
+    let select = req.params.select.trim();
+    if (!db) {
+      res.json([{ error: 'No database connected!' }]);
+      return;
+    }
+    if ((select + '').toLowerCase().indexOf('select ') !== 0) {
+      res.json([{ error: 'Only SELECT queries can be run!' }]);
+      return;
+    }
+    let result;
+    try {
+      result = db.prepare(select).all()
+    }
+    catch (e) {
+      result = [{ error: e + '' }]
+    }
+    res.json(result);
+  });
+
+}

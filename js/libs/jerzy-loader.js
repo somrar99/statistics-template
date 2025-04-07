@@ -1,6 +1,6 @@
 (function () { function r(e, n, t) { function o(i, f) { if (!n[i]) { if (!e[i]) { var c = "function" == typeof require && require; if (!f && c) return c(i, !0); if (u) return u(i, !0); var a = new Error("Cannot find module '" + i + "'"); throw a.code = "MODULE_NOT_FOUND", a } var p = n[i] = { exports: {} }; e[i][0].call(p.exports, function (r) { var n = e[i][1][r]; return o(n || r) }, p, p.exports, r, e, n, t) } return n[i].exports } for (var u = "function" == typeof require && require, i = 0; i < t.length; i++)o(t[i]); return o } return r })()({
 	1: [function (require, module, exports) {
-		window.___jerzy = require('jerzy');
+		globalThis.___jerzy = require('jerzy');
 	}, { "jerzy": 2 }], 2: [function (require, module, exports) {
 		var vector = require('./lib/vector');
 		var factor = require('./lib/factor');
@@ -41,7 +41,7 @@
 		var vector = require('./vector');
 		var distributions = require('./distributions');
 
-		Anova = function () { };
+		const Anova = function () { };
 
 		/*
 		 * One-way ANOVA
@@ -89,7 +89,7 @@
 	}, { "./distributions": 6, "./vector": 16 }], 4: [function (require, module, exports) {
 		var distributions = require('./distributions');
 
-		Confidence = function () { };
+		const Confidence = function () { };
 
 		Confidence.normal = function (x, c) {
 			var alpha = 1 - c;
@@ -115,7 +115,7 @@
 	}, { "./distributions": 6 }], 5: [function (require, module, exports) {
 		var distributions = require('./distributions');
 
-		Correlation = function () { };
+		const Correlation = function () { };
 
 		/*
 		 * Pearson correlation
@@ -145,7 +145,7 @@
 		 * Normal distribution
 		 */
 
-		Normal = function (mean, variance) {
+		const Normal = function (mean, variance) {
 			this.mean = mean;
 			this.variance = variance;
 		};
@@ -243,7 +243,7 @@
 		 * T distribution
 		 */
 
-		T = function (df) {
+		const T = function (df) {
 			this.df = df;
 		};
 
@@ -297,7 +297,7 @@
 		 * Kolmogorov distribution
 		 */
 
-		Kolmogorov = function () { };
+		const Kolmogorov = function () { };
 
 		Kolmogorov.prototype._di = function (x) {
 			var term;
@@ -336,7 +336,7 @@
 		 * F distribution
 		 */
 
-		F = function (df1, df2) {
+		const F = function (df1, df2) {
 			this.df1 = df1;
 			this.df2 = df2;
 		};
@@ -363,7 +363,7 @@
 		module.exports.F = F;
 		module.exports.Kolmogorov = Kolmogorov;
 	}, { "./misc": 9, "./numeric": 12, "./vector": 16 }], 7: [function (require, module, exports) {
-		Factor = function (elements) {
+		const Factor = function (elements) {
 			this.levels = [];
 			this.factors = [];
 			for (var i = 0; i < elements.length; i++) {
@@ -395,7 +395,7 @@
 
 		module.exports.Factor = Factor;
 	}, {}], 8: [function (require, module, exports) {
-		Matrix = function (elements) {
+		const Matrix = function (elements) {
 			this.elements = elements;
 		};
 
@@ -426,7 +426,7 @@
 	}, {}], 9: [function (require, module, exports) {
 		var numeric = require('./numeric');
 
-		Misc = function () { };
+		const Misc = function () { };
 
 		/*
 		 * error function
@@ -517,7 +517,7 @@
 		var vector = require('./vector');
 		var distributions = require('./distributions');
 
-		Nonparametric = function () { };
+		const Nonparametric = function () { };
 
 		/*
 		 * Two-sample Kolmogorov-Smirnov test
@@ -546,10 +546,10 @@
 		var vector = require('./vector');
 		var distributions = require('./distributions');
 
-		Normality = function () { };
+		const Normality = function () { };
 
 		Normality.shapiroWilk = function (x) {
-			result = {};
+			var result = {};
 			var xx = x.sort();
 			var mean = x.mean();
 			var n = x.length();
@@ -627,7 +627,7 @@
 
 		module.exports.Normality = Normality;
 	}, { "./distributions": 6, "./matrix": 8, "./vector": 16 }], 12: [function (require, module, exports) {
-		Numeric = function () { };
+		const Numeric = function () { };
 
 		/*
 		 * adaptive Simpson
@@ -695,7 +695,7 @@
 	}, {}], 13: [function (require, module, exports) {
 		var distributions = require('./distributions');
 
-		Power = function () { };
+		const Power = function () { };
 
 		/*
 		 * Sample size calculation
@@ -711,7 +711,7 @@
 	}, { "./distributions": 6 }], 14: [function (require, module, exports) {
 		var distributions = require('./distributions');
 
-		Regression = function () { };
+		const Regression = function () { };
 
 		/*
 		 * simple linear regression
@@ -772,7 +772,7 @@
 		var vector = require('./vector');
 		var distributions = require('./distributions');
 
-		StudentT = function () { };
+		const StudentT = function () { };
 
 		StudentT.test = function (first, second) {
 			if (second instanceof vector.Vector) {
@@ -814,7 +814,7 @@
 
 		module.exports.StudentT = StudentT;
 	}, { "./distributions": 6, "./vector": 16 }], 16: [function (require, module, exports) {
-		Vector = function (elements) {
+		const Vector = function (elements) {
 			this.elements = elements;
 		};
 
