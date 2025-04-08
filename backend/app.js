@@ -1,8 +1,8 @@
 import express from 'express';
-import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 import sstatparts from './sstatparts.js';
+import dbRouter from './dbRouter.js';
 
 // Port to start the web server on
 const port = 3005;
@@ -17,7 +17,7 @@ const dirname = import.meta.dirname;
 // (now they are all bundled - so they should stop, but we're kind)
 let libNames = [
   'addDropdown', 'addMdToPage', 'addToPage',
-  'createMenu', 'csvLoad', 'dbQuery',
+  'createMenu', 'csvLoad', 'XdbQuery',
   'drawGoogleChart', 'jload', 'makeChartFriendly',
   'reloadPageScript', 'simple-statistics', 's',
   'stdLib', 'tableFromData', 'jerzy'
@@ -98,38 +98,7 @@ app.get('/api/getMainScript', (_req, res) => {
   );
 });
 
-// Only if dbFolder exists
-let dbFolder = path.join(dirname, '..', 'sqlite-databases');
-if (fs.existsSync(dbFolder)) {
-
-  // Read settings for which SQLite-database to use
-  let databaseToUse = fs.readFileSync(path.join(dbFolder, 'database-in-use.json'), 'utf-8').slice(1, -1);
-  databaseToUse = path.join(path.join(dbFolder, databaseToUse));
-  // database connection
-  let db;
-  if (fs.existsSync(databaseToUse)) {
-    db = new Database(databaseToUse);
-  }
-
-  // route for database query (SELECT:s only)
-  app.get('/api/dbquery/:select', (req, res) => {
-    let select = req.params.select.trim();
-    if (!db) {
-      res.json([{ error: 'No database connected!' }]);
-      return;
-    }
-    if ((select + '').toLowerCase().indexOf('select ') !== 0) {
-      res.json([{ error: 'Only SELECT queries can be run!' }]);
-      return;
-    }
-    let result;
-    try {
-      result = db.prepare(select).all();
-    }
-    catch (e) {
-      result = [{ error: e + '' }];
-    }
-    res.json(result);
-  });
-}
-
+// Set up database api
+let databasesFolder = path.join(dirname, '..', 'databases');
+let sqliteFolder = path.join(databasesFolder, 'sqlite-dbs');
+dbRouter(app, databasesFolder, sqliteFolder);
