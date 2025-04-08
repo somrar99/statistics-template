@@ -12,23 +12,25 @@ const app = express();
 // Path to this folder
 const dirname = import.meta.dirname;
 
-// make all libs exports global
-const libsFolder = path.join(dirname, '..', 'js', 'libs');
-let files = fs.readdirSync(libsFolder)
-  .filter(x => x.endsWith('.js') && !x.includes('jerzy') && !x.includes('liveReload') && !x.includes('-'));
-let imports = files.map(x => `import ${x.split('.')[0]} from '/js/libs/${x}';`).join('\n');
-let names = files.map(x => `  ${x.split('.')[0]}`).join(',\n');
-let globalize = `Object.assign(globalThis,{\n${names}\n});`;
-globalize += '\n\nglobalThis.s = simpleStatistics';
-let globalizerContent = imports + '\n\n' + globalize;
-app.get('/globalizer.js', (_req, res) => {
-  res.type('application/javascript');
-  res.send(globalizerContent);
-});
-
 // Serve the README-file using the showDocs mini-site
 app.get('/docs/README.md', (_req, res) => res.sendFile(path.join(dirname, '..', 'README.md')));
 app.use('/docs', express.static(path.join(dirname, 'showDocs')));
+
+// Wrap js in async function
+app.use((req, res, next) => {
+  if (req.url.endsWith('?wrap')) {
+    let file = req.url.slice(1).split('?')[0].split('/');
+    file = path.join(dirname, '..', ...file);
+    if (fs.existsSync(file)) {
+      let content = fs.readFileSync(file, 'utf-8');
+      content = `export default async () => { ${content} }`;
+      res.type('application/javascript');
+      res.send(content);
+      return;
+    }
+  }
+  next();
+});
 
 // Serve the files in the main folder
 app.use(express.static(path.join(dirname, '..')));
@@ -45,7 +47,6 @@ app.get('/api/reload-if-closes', (_req, res) => {
   });
   setInterval(() => res.write('data: ping\n\n'), 20000);
 });
-
 
 // app get script to start with
 // check for scripts in this order

@@ -1,14 +1,16 @@
-export default function reloadPageScript(scriptSrc) {
-  let scriptToReload = document.querySelector('script.page-script') || { remove: () => { } };
-  let src = scriptSrc || scriptToReload.getAttribute('src');
-  src = src.split('?')[0] + '?' + Math.random();
-  scriptToReload.remove();
-  let newScript = document.createElement('script');
-  newScript.setAttribute('type', 'module');
-  newScript.classList.add('page-script');
-  newScript.setAttribute('src', src);
+let importMem = {};
+let currentPage;
+
+export default async function reloadPageScript(scriptSrc) {
+  let src = scriptSrc || currentPage;
+  currentPage = src;
+  src = src.split('?')[0];
+  if (!importMem[src]) {
+    console.log(src);
+    importMem[src] = (await import(src + '?wrap')).default;
+  }
   document.body.classList.add('bigBottomPad');
-  newScript.onload = () => document.body.classList.remove('bigBottomPad');
   document.querySelector('main').innerHTML = '';
-  document.body.append(newScript);
+  importMem[src]();
+  document.body.classList.remove('bigBottomPad');
 }
