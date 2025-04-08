@@ -47,7 +47,7 @@ Mappen backend ska du sällan (om någonsin) behöva fälla ut och öppna filer 
 
 ### Mappen js
 
-#### Filstruktur i js-mappen
+#### Exempel på filstruktur i js-mappen
 ![Filstruktur i js-mappen](backend/showDocs/images/file-structure-js-folder.png)
 
 Det här är den viktigaste mappen för dig.
@@ -65,6 +65,33 @@ Det här är den viktigaste mappen för dig.
 Allt detta gör du via olika funktionsanrop som finns dokumenterade under huvudrubriken **API**.
 
 I mappen finns även en undermap med namnet **libs**. Denna behöver du sällan (om någonsin) titta i, men den innehåller olika hjälpbibliotek vars kod du kan använda dig av. (Hur du använder dem finns dokumenterat under rubriken **API**.)
+
+>**Tänk på:**
+>* Det du ser i exemplet ovan är bara exempelfiler.
+>* När du startar ett eget projekt kan du ta bort dem, utom mappen **libs** och filen **_menu.js**.
+>* Filen **_menu.js** ändrar du så att den länkar olika menyval i webbplatsens menysystem till att köra olika JavaScript-filer.
+
+### Mappen node_modules
+Mappen **node_modules** skapas först när du har skrivit **npm install**. Den innehåller de bibliotek som mallen (och framförallt webbservern/backend) är beroende av för att fungera - bl.a. databasdrivers.
+
+Du ska aldrig behöva öppna denn mapp!
+
+### Mappen sqlite-databases
+![Filstruktur i sqlite-databases-mappen](backend/showDocs/images/file-structure-sqlite-databases-folder.png)
+
+I mappen **sqlite-databases** lägger du de **SQLite**-databaser du vill använda dig av.  (Behöver bara vara en.)
+
+* Upp t.o.m. version 6 (denna version) av mallen kan du bara använda dig av databas från dina JavaScript-filer. I framtida versioner funderar vi på att ändra detta, samt även lägga till möjlighet att koppla sig mot andra typer av databaser än **SQLite**-databaser.
+* Det är viktigt att du berättar för **webbservern** vilken databas du vill använda (se nedan).
+
+#### Berätta vilken databas du vill använda
+Öppna filen **database-in-use.json** och redigera den, genom att byta namnet inom citattecken till det exakta filnamnet för den databas du vill använda (som ska ligga i samma mapp):
+
+```json
+"smhi-temp-and-rainfall-malmo.sqlite3"
+```
+
+### Filer utanför mappar
 
 
 
