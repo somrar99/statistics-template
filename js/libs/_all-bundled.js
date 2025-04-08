@@ -307,6 +307,7 @@ function addToPage(e$, t$ = "main") {
 let importMem = {}, currentPage;
 const sleep = (e$) => new Promise((t$) => setTimeout(t$, e$));
 async function reloadPageScript(e$) {
+  globalThis.__usingDb = "default";
   let t$ = e$ || currentPage;
   currentPage = t$, t$ = t$.split("?")[0], importMem[t$] || (importMem[t$] = (await import(t$ + "?wrap")).default), document.body.classList.add("bigBottomPad"), await sleep(50), document.querySelector("main").innerHTML = "", importMem[t$](), await sleep(50), document.body.classList.remove("bigBottomPad");
 }
@@ -425,15 +426,21 @@ async function csvLoad(e$, t$ = ",", n$ = '"') {
   }
   return a$;
 }
-async function jload(e$) {
-  return await (await fetch(e$)).json();
-}
 async function dbQuery(e$) {
-  return await jload("/api/dbquery/" + encodeURIComponent(e$));
+  return e$ = typeof e$ == "string" ? e$ : JSON.stringify(e$), await jload(
+    "/api/dbquery/" + encodeURIComponent(globalThis.__usingDb) + "/" + encodeURIComponent(e$.trim())
+  );
+}
+globalThis.__usingDb = "default";
+dbQuery.use = (e$) => {
+  globalThis.__usingDb = e$;
+};
+async function jload$1(e$) {
+  return await (await fetch(e$)).json();
 }
 let gv;
 async function waiter() {
-  let e$ = await jload("chartSettings.json");
+  let e$ = await jload$1("chartSettings.json");
   return new Promise((t$) => {
     google.charts.load("current", e$), google.charts.setOnLoadCallback(() => {
       gv = google.visualization, gv.toTable = gv.arrayToDataTable, t$();
@@ -444,7 +451,7 @@ await waiter();
 const gv$1 = gv;
 let counter = 1;
 async function drawGoogleChart({ type: e$, data: t$, element: n$, options: r$ }) {
-  n$ = n$ && $$1A(n$), n$ || (n$ = document.createElement("div"), n$.classList.add("chart-" + counter++), document.querySelector("main").append(n$)), t$ = typeof t$ == "string" ? await jload("pie-chart-data.json") : t$, new gv$1[e$](n$).draw(gv$1.toTable(t$), r$);
+  n$ = n$ && $$1A(n$), n$ || (n$ = document.createElement("div"), n$.classList.add("chart-" + counter++), document.querySelector("main").append(n$)), t$ = typeof t$ == "string" ? await jload$1("pie-chart-data.json") : t$, new gv$1[e$](n$).draw(gv$1.toTable(t$), r$);
 }
 let timeout;
 window.onresize = () => {
@@ -43277,7 +43284,7 @@ const all = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty(
   csvLoad,
   dbQuery,
   drawGoogleChart,
-  jload,
+  jload: jload$1,
   makeChartFriendly,
   reloadPageScript,
   simpleStatistics: s$9y,

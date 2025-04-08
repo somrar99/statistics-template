@@ -17,7 +17,7 @@ const dirname = import.meta.dirname;
 // (now they are all bundled - so they should stop, but we're kind)
 let libNames = [
   'addDropdown', 'addMdToPage', 'addToPage',
-  'createMenu', 'csvLoad', 'XdbQuery',
+  'createMenu', 'csvLoad', 'dbQuery',
   'drawGoogleChart', 'jload', 'makeChartFriendly',
   'reloadPageScript', 'simple-statistics', 's',
   'stdLib', 'tableFromData', 'jerzy'
