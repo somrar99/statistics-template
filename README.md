@@ -46,7 +46,27 @@ Mappen backend ska du sällan (om någonsin) behöva fälla ut och öppna filer 
 * Webbservern är även ett viktigt led i koppling till databaser. All trafik till    databaser går genom webbservern, fast det för dig ser ut som om du ställer databasfrågorna direkt i din JavaScript-kod i mappen **js** (dvs. i kod som körs på frontend/i webbläsaren).
 
 ### Mappen js
-Det här är den viktigast
+
+#### Filstruktur i js-mappen
+![Filstruktur i js-mappen](backend/showDocs/images/file-structure-js-folder.png)
+
+Det här är den viktigaste mappen för dig.
+* Genom att ändra i filen **_menu.js** skapar du menysystemet för din webbplats.
+* Genom att lägga till olika JavaScript-filer skapar du olika sidor på webbplatsen.
+* I JavaScript-filerna kan du
+    * Ställa frågor mot en databas.
+    * Läsa in data från **JSON**- och **CSV**-filer.
+    * Ta fram olika statistiska mått med hjälp av biblioteken [Simple Statistics](https://simple-statistics.github.io) och [StdLib](https://stdlib.io)).
+    * Visualisera data som diagram med hjälp av [Google Charts](https://developers.google.com/chart).
+    * Visa data i tabeller.
+    * Visa upp formaterad text som du skriver i [Markdown](https://www.markdownguide.org)-format.
+    * Skapa **dropdowns** och reagera på att användaren gör val i dem.
+
+Allt detta gör du via olika funktionsanrop som finns dokumenterade under huvudrubriken **API**.
+
+I mappen finns även en undermap med namnet **libs**. Denna behöver du sällan (om någonsin) titta i, men den innehåller olika hjälpbibliotek vars kod du kan använda dig av. (Hur du använder dem finns dokumenterat under rubriken **API**.)
+
+
 
 
 ## Log: A nice logger
