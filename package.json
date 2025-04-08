@@ -4,8 +4,7 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon backend/app.js",
-    "postinstall": "node js/libs/fix-stdlib-install.js"
+    "start": "nodemon backend/app.js"
   },
   "keywords": [],
   "author": "",
