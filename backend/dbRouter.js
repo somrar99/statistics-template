@@ -91,8 +91,11 @@ export default async function dbRouter(app, databasesFolder, sqliteFolder) {
         }
       }
       if (type === 'mongodb') {
-        const { collection, find } = JSON.parse(query);
-        result = await con.collection(collection).find(find).toArray();
+        let obj = con;
+        for (let { command, args } of JSON.parse(query)) {
+          obj = obj[command](...args);
+        }
+        result = await obj.toArray();
       }
       if (type === 'neo4j') {
         const raw = await con.run(query);

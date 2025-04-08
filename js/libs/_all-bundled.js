@@ -427,13 +427,29 @@ async function csvLoad(e$, t$ = ",", n$ = '"') {
   return a$;
 }
 async function dbQuery(e$) {
-  return e$ = typeof e$ == "string" ? e$ : JSON.stringify(e$), await jload(
+  if (typeof e$ != "string")
+    throw new Error("Query must be a string!");
+  return await jload(
     "/api/dbquery/" + encodeURIComponent(globalThis.__usingDb) + "/" + encodeURIComponent(e$.trim())
   );
 }
 globalThis.__usingDb = "default";
 dbQuery.use = (e$) => {
   globalThis.__usingDb = e$;
+};
+dbQuery.collection = (...e$) => {
+  let t$ = [{ command: "collection", args: e$ }], n$ = {
+    get($$, i$) {
+      return t$.push({ command: i$ }), new Proxy(r$, n$);
+    }
+  }, r$ = (...$$) => (t$[t$.length - 1].args = $$, t$.slice(-1)[0].command === "then" && (async () => $$[0](await dbQuery(JSON.stringify(t$.slice(0, -1)))))(), new Proxy(r$, n$));
+  return new Proxy(r$, n$);
+};
+RegExp.prototype.toJSON = function() {
+  let e$ = (this + "").split("/"), t$ = e$.pop();
+  e$ = e$.join("/").slice(1);
+  let n$ = { $regex: e$ };
+  return t$ && (n$.$options = t$), n$;
 };
 async function jload$1(e$) {
   return await (await fetch(e$)).json();
