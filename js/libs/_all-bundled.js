@@ -308,7 +308,7 @@ let importMem = {}, currentPage;
 const sleep = (e$) => new Promise((t$) => setTimeout(t$, e$));
 async function reloadPageScript(e$) {
   let t$ = e$ || currentPage;
-  currentPage = t$, t$ = t$.split("?")[0], importMem[t$] || (console.log(t$), importMem[t$] = (await import(t$ + "?wrap")).default), document.body.classList.add("bigBottomPad"), await sleep(50), document.querySelector("main").innerHTML = "", importMem[t$](), await sleep(50), document.body.classList.remove("bigBottomPad");
+  currentPage = t$, t$ = t$.split("?")[0], importMem[t$] || (importMem[t$] = (await import(t$ + "?wrap")).default), document.body.classList.add("bigBottomPad"), await sleep(50), document.querySelector("main").innerHTML = "", importMem[t$](), await sleep(50), document.body.classList.remove("bigBottomPad");
 }
 globalThis.dropdownValues = globalThis.dropdownValues || {};
 function addDropdown(e$, t$, n$ = "") {

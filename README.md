@@ -74,7 +74,7 @@ I mappen finns även en undermap med namnet **libs**. Denna behöver du sällan 
 ### Mappen node_modules
 Mappen **node_modules** skapas först när du har skrivit **npm install**. Den innehåller de bibliotek/moduler som mallen (och framförallt webbservern/backend) är beroende av för att fungera - bl.a. databasdrivers.
 
-Du ska aldrig behöva öppna denn mapp!
+Du ska aldrig behöva öppna denna mapp!
 
 ### Mappen sqlite-databases
 ![Filstruktur i sqlite-databases-mappen](backend/showDocs/images/file-structure-sqlite-databases-folder.png)
@@ -114,6 +114,8 @@ I denna sektion av dokumentationen beskriver vi API:t - det *Application Program
 >Det behöver/bör du *inte* göra fr.o.m. version 6. Dina kommer åt alla funktioner listade här nedan **utan** att skriva **import**-statements.
 >
 >Den enda gången **import**-statements numera är aktuella är när du vill exportera/importera variabler, data och funktioner mellan dina egna filer!
+>
+>*En fördel utöver färre importer:* Du kan i webbläsarens *console* nu anropa alla funktioner direkt!
 
 #### Skapa menyn
 * [createMenu](#createmenu)
@@ -121,30 +123,30 @@ I denna sektion av dokumentationen beskriver vi API:t - det *Application Program
 #### Läsa data från dataset
 **Obs!** Samtliga dessa funktioner behöver anropas med **await** framförallt och resultatet behöver tilldelas till en variabel.
 * [jload](#jload)
-* csvLoad
-* dbQuery
+* [csvLoad](#csvload)
+* [dbQuery](#dbquery)
 
 #### Visa text, tabeller och dropdowns
-* addToPage
-* addMdToPage
-* tableFromData
-* addDropdown
+* [addToPage](#addtopage)
+* [addMdToPage](#addmdtopage)
+* [tableFromData](#tablefromdata)
+* [addDropdown](#adddropdown)
 
 #### Rita diagram med Google Charts
-* makeChartFriendly
-* drawGoogleChart
+* [makeChartFriendly](#makechartfriendly)
+* [drawGoogleChart](#drawgooglechart)
 
 #### Statistikbibliotek
-Statistikbiblioteken är objekt/moduler som innehåller många olika funktioner. Du behöver fånga upp resultatet av beräkningar i variabler.
-* **s** - står för **simpleStatistics**. *Exempel på användning*: Räkna ut ett medelvärde genom att anropa **s.mean([1,2,3])**
-* **stdLib** - står för "standard library". *Exempel på användning*: Ett tvåsidigt T-test mellan två dataserier kan genomföras så här **stdLib.stats.ttest2([1,2,4],[1,2,3])**.
-
-I tidigare versioner av mallen hade vi även med ett statistikbibliotek som heter **jerzy**. Den enda funktionen vi har nytta av från detta bibliotek, som inte finns i något av de andra, är *Shapiro-wilks*-testet för *normalfördelning*. Detta har vi därför "ympat in" så att det kan nås från **stdLib**, exempel: **stdLib.stats.shapiroWilkTest([1,1,2,3,3])**.
+* [Simple Statistics](simple-statistics)
+* [StdLib](stdllib)
 
 ### createMenu
 >**Obs!** Anropa bara **createMenu** *en* gång i ditt projekt, i filen **_menu.js**.
 
-**createMenu('Sajtnamn', [...menyVal...]);**
+
+```js
+createMenu('Sajtnamn', [...menyVal...]);
+```
 
 #### Exempel: En enkel meny med tre val
 Menyvalen är en array av objekt - menyval - i vilken varje objekt har egenskaperna **name**, text som visas i menyn, samt **script** - scriptet som ska köras när menyvalet görs.
@@ -175,7 +177,308 @@ createMenu('Sajtnamn', [
 
 
 ### jload
-Hej svej
+
+```js
+let data = await jload(urlToJsonData);
+```
+
+Laddar json från en url som levererar json, t.ex. en json-fil som du lägger på grundnivå i ditt projekt.
+
+#### Exempel
+Du har skapat en mapp **json** i ditt projekt och i den lagt filen **pets.json** som innehåller en array av objekt. Du laddar nu in datan så här:
+
+```js
+let pets = await jload('/json/pets.json');
+```
+
+### csvLoad
+
+```js
+let data = await csvLoad(url, separator = ',', stringQuote = '"');
+```
+
+Laddar csv-data från en url som levererar en csv-fil och omvandlar den till en array av objekt.
+
+**Notera:**
+* Parametern **separator** är *optional*. Den sätts som default till ','. Om CSV-filen skiljer av kolumner med ett annat tecken än ',' anger du det, t.ex. ';'.
+* Parametern **stringQuote** är *optional*. Vissa CSV-filer innehåller separator-tecknet inuti textsträngar - och då ska det inte tolkas som ny kolumn. Om CSV-filen använder ett annat tecken än " för detta anger du det, t.ex. ' (enkelt citattecken).
+
+#### Exempel
+Du har skapat en mapp **csv** i ditt projekt och i den lagt filen **people.csv**. Filen skiljer av kolumner med semikolon, inte kolon... Du laddar nu in datan så här:
+
+```js
+let pets = await csvLoad('/csv/people.csv',';');
+```
+
+>**Obs!**
+>
+>Du måste se till att den översta raden (rad 1) i CSV-filen innehåller kolumnnamnen och att datan börjar på nästa rad (rad 2)!
+
+### dbQuery
+
+```js
+let data = async function dbQuery(selectQuery);
+```
+
+* Låter dig ställa en valfri SELECT-fråga till din databas. (Se [detta avsnitt](#mappen-sqlite-databases) för hur du kopplar in en databas.)
+* Omvandlar svaret till en array av objects.
+
+#### Exempel
+Du har en databas i vilken tabellen/vyn **dataWithMonths** iinnehåller en kolumn **year** och du vill plocka ut alla unika värden:
+
+```js
+let years = await dbQuery('SELECT DISTINCT year FROM dataWithMonths');
+```
+
+**Notera:**
+Nu har datan formatet:
+
+```js
+[ {year: 2021}, {year: 2022}, {year:2023} ]
+```
+
+För att omvandla till en array av nummer:
+
+```js
+years = years.map(x => x.year);
+```
+
+### addToPage
+
+```js
+ addToPage(html);
+```
+
+Lägger till html på en sida.
+
+#### Exempel
+Vi lägger till en h3-tagg, med texten 'Min rubrik på nivå 3':
+```js
+addToPage('<h3>Min rubrik på nivå 3</h3>');
+```
+
+>**Notera:**
+>
+>Det är ofta smidigare att använda metoden [addMdToPage](#addmdtopage) som låter dig använda markdown istället för HTML. Markdown är enklare att lära sig!
+
+### addMdToPage
+
+```js
+addMdToPage(markdown);
+```
+
+Lägger till markdown, som automatiskt omvandlas till HTML, på en sida.
+
+#### Exempel
+Vi lägger till en rubrik, två stycken och en punktlista, samt spränger in två variabler:
+```js
+let catName = 'Maja';
+let dogName = 'Fido';
+
+addMdToPage(`
+### En rubrik på nivå 3
+Ett stycke som handlar om min katt ${catName}. Hon är smart.
+
+Ett stycke som handlar om min hund ${dogName}. Han är:
+* Snäll
+* Busig
+* Tillgiven
+`);
+```
+
+[Lär dig Markdown](https://www.markdownguide.org)!
+
+
+### tableFromData
+
+```js
+tableFromData({
+  data,
+  fixedHeader = false,
+  numberFormatLocale = 'sv-SE',
+  numberFormatOptions = {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  },
+  columnNames = [],
+})
+```
+
+Skapar en tabell från data. Har *en* inparameter som är ett objekt som du kan sätta flera egenskaper i. Dock är bara en obligatorisk, **data**, resten är *optional*.
+
+Här går vi igenom alla:
+* **data** - själva datan, ska vara i formatet en array av objects!
+* **fixedHeader** - sätt till *true* om du har  en lång tabell och vill att kolumnhuvudet stannar kvar på sidan även när du scrollar.
+* **numberFormatLocale** kan sättas om från svenska till andra språk, t.ex. 'en-US' för att ändra hur tusentals- och decimalavskiljare ser ut.
+* **numberFormatOptions** med underegenskaperna **minimumFractionDigits**, **maximumFractionDigits** som används för att ange minimum och maximum nummer av decimaler.
+* columnNames - en array med kolumnrubriker. Anger du inte denna sätts kolumnrubrikerna till samma som egenskapsnamnen på objekten från **data** - arrayen av objekt.
+
+#### Exempel
+En tabell med namn och ålder på två personer:
+
+```js
+tableFromData({
+    data: [ {name:'Erika',age:27}, {name:'Hans',age:35} ],
+    columnNames: ['Namn', 'Ålder']
+});
+```
+
+>**Notera:**
+>
+>Oftast vill du förmodligen använda **tableFromData** med data från ett dataset du hämtat från en JSON-fil, CSV-fil eller från en databas.
+
+### addDropdown
+
+```js
+let chosenItem = addDropdown(label, data, initialValue = '');
+```
+
+Med **addDropdown** lägger du enkelt till en dropdown (även kallad **select** efter sin html-tagg) till din sida. Detta ger dig möjlighet att låta saker hända (filtering av data, omritning av diagram etc.) beroende på vad användaren gör för val i dropdownen.
+
+#### Parametrar
+* **label** - vad som ska stå som förklaring före din dropdown.
+* **data** - en array av strängar som utgör valen/alternativen som visas i din dropdown.
+* **initialValue** - *optional* - om du inte vill att det första valet är förvalt kan du skriva strängen som motsvarar ett annat av de möjliga valen här.
+
+#### Returvärde
+* Fånga upp det valda värdet/strängen som **addDropdown** returnerar i en variabel!
+* Sedan kan du bygga konditionell logik kring vad som är valt, med if-else, eller med villkorsoperatorer.
+
+#### Exempel
+
+```js
+let yourAge = addDropdown('Din ålder:',['Under arton', 'Över arton']);
+addMdToPage(yourAge == 'Under arton' ? 'Du är inte myndig.': 'Du är myndig.');
+```
+
+>**Viktigt!**
+>
+>Varje gång användaren gör ett nytt val i din dropdown kör ditt JavaScript som utgör/motsvarar sidan igen och sidan genereras om! (Övriga dropdowns på sidan bibehåller dock sina värden, så du kan ha flera  dropdowns på sidan som alla kommer ihåg sina värden.)
+
+>**Notera:**
+>
+>Ofta vill du förmodligen använda **addDropdown** med data från ett dataset du hämtat från en JSON-fil, CSV-fil eller från en databas.
+
+### makeChartFriendly
+
+```js
+let dataForChart = makeChartFriendly(arrayOfObjects, ...columnNames);
+```
+
+Vi arbetar oftast med data i formatet arrayer av objekt. Det är så data returneras från databaser ochCSV-filer, samt även ofta är organiserad i JSON-filer!
+
+Men **Google Charts** tycker om en lite annan datastruktur: Arrayer av arrayer, där den översta arrayen motsvarar kolumnhuvuden.
+
+Funktionen **makeChartFriendly** omvandlar till ett dataformat **Google Charts** gillar, vilket låter dig förbereda utvald data för diagramvisning!
+
+#### Exempel 2
+```js
+// Data som en array av objekt
+let data = [
+  { "name": "Erika", "age": 27 },
+  { "name": "Hans", "age": 35 }
+];
+
+let dataForChart = makeChartFriendly(data);
+```
+
+**Resultat, dataForChart innehåller:**
+```js
+[
+  [ "name", "age" ],
+  [ "Erika", 27 ],
+  [ "Hans", 35 ]
+]
+```
+
+#### Exempel 2
+Med egna kolumnnamn:
+
+```js
+// Data som en array av objekt
+let data = [
+  { "name": "Erika", "age": 27 },
+  { "name": "Hans", "age": 35 }
+];
+
+let dataForChart = makeChartFriendly(data, 'Namn', 'Ålder');
+```
+
+**Resultat, dataForChart innehåller:**
+```js
+[
+  [ "Namn", "Ålder" ],
+  [ "Erika", 27 ],
+  [ "Hans", 35 ]
+]
+```
+
+###  drawGoogleChart
+
+```js
+drawGoogleChart({
+    type: 'TypeOfDiagram',
+    data: dataInChartFriendlyFormat,
+    options: optionsForTheChart
+});
+```
+Med **drawGoogleChart** kan vi rita diagram. Allt som går att göra med *options*, *diagramtyper* etc. enligt [Googles dokumentation](https://developers.google.com/chart) fungerar, men syntaxen är något komprimerad för att vara snabbare att arbeta med än i Googles egna exempel!
+
+#### Exempel
+Ett exempel i vilket vi även använder [makeChartFriendly](#makechartfriendly) direkt för att omvandla datan till ett format som Google Chart tycker om.
+
+```js
+drawGoogleChart({
+  type: 'LineChart',
+  data: makeChartFriendly(dataForChart, 'månad', '°C'),
+  options: {
+    height: 500,
+    chartArea: { left: 50, right: 0 },
+    curveType: 'function',
+    pointSize: 5,
+    pointShape: 'circle',
+    vAxis: { format: '# °C' },
+    title: `Medeltemperatur per månad i Malmö ${currentYear} (°C)`
+  }
+});
+```
+
+>**Notera:**
+>
+>För att få diagrammen *responsiva*, dvs. att de anpassar sig till skärmstorleken, bör du undvika att sätta en **width** på dem under options (för Google Charts förstår bara pixelbredder och inte procentuella bredder).
+
+Istället kan du göra som här, sätta *left* och *right*-värden! (Tänk dock på att inte sätta *left* till 0 - för då försvinner siffrorna på vänster/vertikal-axeln.)
+
+### Simple Statistics
+Statistikbiblioteket [Simple Statistics](https://simple-statistics.github.io) är ett objekt/modul som innehåller många olika funktioner. Du behöver fånga upp resultatet av beräkningar i variabler!
+
+* Du behöver inte skriva ut **simpleStatistics** utan kan skriva **s**.
+
+
+#### Exempel på användning
+Räkna ut ett medelvärde genom att anropa **s.mean**:
+
+```js
+let mean = s.mean([1,2,3]);
+```
+
+### stdLib
+[StdLib](https://stdlib.io) är ett större bibliotek med många matematiska funktioner. Den består av ett objekt/modul med underobjekt (för olika delområden), vilka i sin tur funktioner är sorterade under.
+
+#### Exempel på användning
+Ett tvåsidigt T-test mellan två dataserier kan genomföras så här:
+
+```js
+let result = stdLib.stats.ttest2([1,2,4],[1,2,3]);
+let pValue = result.pValue;
+```
+
+I tidigare versioner av mallen hade vi även med ett statistikbibliotek som heter **jerzy**. Den enda funktionen vi har nytta av från detta bibliotek, som inte finns i något av de andra, är *Shapiro-wilks*-testet för *normalfördelning*. Detta har vi därför "ympat in" så att det kan nås från **stdLib**, så här:
+
+```js
+let result = stdLib.stats.shapiroWilkTest([1,1,2,3,3]);
+let pValue = result.p;
+```
 
 ## MIT License
 Copyright © 2025 ironboy/NodeHill
