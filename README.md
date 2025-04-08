@@ -446,8 +446,8 @@ drawGoogleChart({
 >**Notera:**
 >
 >För att få diagrammen *responsiva*, dvs. att de anpassar sig till skärmstorleken, bör du undvika att sätta en **width** på dem under options (för Google Charts förstår bara pixelbredder och inte procentuella bredder).
-
-Istället kan du göra som här, sätta *left* och *right*-värden! (Tänk dock på att inte sätta *left* till 0 - för då försvinner siffrorna på vänster/vertikal-axeln.)
+>
+>Istället kan du göra som här, sätta *left* och *right*-värden! (Tänk dock på att inte sätta *left* till 0 - för då försvinner siffrorna på vänster/vertikal-axeln.)
 
 ### Simple Statistics
 Statistikbiblioteket [Simple Statistics](https://simple-statistics.github.io) är ett objekt/modul som innehåller många olika funktioner. Du behöver fånga upp resultatet av beräkningar i variabler!
