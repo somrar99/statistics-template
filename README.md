@@ -301,7 +301,7 @@ tableFromData({
     maximumFractionDigits: 2,
   },
   columnNames = [],
-})
+});
 ```
 
 Skapar en tabell från data. Har *en* inparameter som är ett objekt som du kan sätta flera egenskaper i. Dock är bara en obligatorisk, **data**, resten är *optional*.
