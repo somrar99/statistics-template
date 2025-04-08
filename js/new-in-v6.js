@@ -1,3 +1,5 @@
+console.log(stdLib.stats.shapiroWilkTest([1, 1, 2, 3, 3]));
+
 addMdToPage(`
   ## Nytt i version 5 av mallen
   Nytt i version 5 av mallen är bl.a. att vi kan visa och läsa av dropdowns med hjälp av funktionen **addDropdown**.
