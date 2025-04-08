@@ -201,7 +201,7 @@ Laddar csv-data från en url som levererar en csv-fil och omvandlar den till en 
 
 **Notera:**
 * Parametern **separator** är *optional*. Den sätts som default till ','. Om CSV-filen skiljer av kolumner med ett annat tecken än ',' anger du det, t.ex. ';'.
-* Parametern **stringQuote** är *optional*. Vissa CSV-filer innehåller separator-tecknet inuti textsträngar - och då ska det inte tolkas som ny kolumn. Om CSV-filen använder ett annat tecken än " för detta anger du det, t.ex. ' (enkelt citattecken).
+* Parametern **stringQuote** är *optional*. Vissa CSV-filer innehåller separator-tecknet inuti textsträngar - och då ska det inte tolkas som ny kolumn. Om CSV-filen använder ett annat tecken än " för att markera att en textsträng börjar/slutar anger du det här, t.ex. ' (enkelt citattecken).
 
 #### Exempel
 Du har skapat en mapp **csv** i ditt projekt och i den lagt filen **people.csv**. Filen skiljer av kolumner med semikolon, inte kolon... Du laddar nu in datan så här:
