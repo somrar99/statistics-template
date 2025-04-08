@@ -6,11 +6,12 @@ async function loadContent() {
   x = x.replace(/\n## /g, '\n### H2:');
   x = x.slice(x.indexOf('##'));
   x = marked.parse(x);
+  x = x.replaceAll('backend/showDocs/images', '/backend/showDocs/images');
   document.body.innerHTML = /*html*/`
     <header>
       <a href="/">Statistics Template JS</a>
       <div class="burger"><div>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0,0,0, 1);transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
       </div></div>
       <span>© ironboy/NodeHill 2025</span>
     </header>

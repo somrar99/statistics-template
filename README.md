@@ -32,8 +32,21 @@ Vi hoppas att du kommer att få mycket nytta av mallen!
 ### Filstruktur i mallen
 >**Viktigt!**
 >
->Öppna **inte**
+>* Öppna **inte** mallen på fel nivå i **VSC**!
+>* Kontrollera att filen **package.json** befinner sig på "grundnivå" (inte inuti någon annan mapp). Då har du öppnat rätt!
+>* Att öppna på fel nivå kan leda till en mängd olika problem, t.ex. med sökvägar som inte fungerar.
 
+#### Fil- och mappstruktur på grundnivå
+![Filstruktur](backend/showDocs/images/file-structure.png)
+
+### Mappen backend
+Mappen backend ska du sällan (om någonsin) behöva fälla ut och öppna filer i.
+
+* Här finns koden som startar vår webbserver - serverar filer/resurser till webbläsaren.
+* Webbservern är även ett viktigt led i koppling till databaser. All trafik till    databaser går genom webbservern, fast det för dig ser ut som om du ställer databasfrågorna direkt i din JavaScript-kod i mappen **js** (dvs. i kod som körs på frontend/i webbläsaren).
+
+### Mappen js
+Det här är den viktigast
 
 
 ## Log: A nice logger
