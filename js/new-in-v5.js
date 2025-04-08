@@ -1,6 +1,3 @@
-import addMdToPage from './libs/addMdToPage.js';
-import addDropdown from './libs/addDropdown.js';
-
 addMdToPage(`
   ## Nytt i version 5 av mallen
   Nytt i version 5 av mallen är bl.a. att vi kan visa och läsa av dropdowns med hjälp av funktionen **addDropdown**.

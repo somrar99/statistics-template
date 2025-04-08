@@ -9,8 +9,29 @@ const port = 3005;
 // Create a web server
 const app = express();
 
+// Path to this folder
+const dirname = import.meta.dirname;
+
+// make all libs exports global
+const libsFolder = path.join(dirname, '..', 'js', 'libs');
+let files = fs.readdirSync(libsFolder)
+  .filter(x => x.endsWith('.js') && !x.includes('jerzy') && !x.includes('liveReload') && !x.includes('-'));
+let imports = files.map(x => `import ${x.split('.')[0]} from '/js/libs/${x}';`).join('\n');
+let names = files.map(x => `  ${x.split('.')[0]}`).join(',\n');
+let globalize = `Object.assign(globalThis,{\n${names}\n});`;
+globalize += '\n\nglobalThis.s = simpleStatistics';
+let globalizerContent = imports + '\n\n' + globalize;
+app.get('/globalizer.js', (_req, res) => {
+  res.type('application/javascript');
+  res.send(globalizerContent);
+});
+
+// Serve the README-file using the showDocs mini-site
+app.get('/docs/README.md', (_req, res) => res.sendFile(path.join(dirname, '..', 'README.md')));
+app.use('/docs', express.static(path.join(dirname, 'showDocs')));
+
 // Serve the files in the main folder
-app.use(express.static(path.join(import.meta.dirname, '..')));
+app.use(express.static(path.join(dirname, '..')));
 
 // Start the web server
 app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
@@ -30,7 +51,7 @@ app.get('/api/reload-if-closes', (_req, res) => {
 // check for scripts in this order
 // js/_menu.js, js/main.js, main.js
 app.get('/api/getMainScript', (_req, res) => {
-  let mainFolder = path.join(import.meta.dirname, '..');
+  let mainFolder = path.join(dirname, '..');
   let whichScriptsExists = [
     { name: '/js/_menu.js', exists: fs.existsSync(path.join(mainFolder, 'js', '_menu.js')) },
     { name: '/js/main.js', exists: fs.existsSync(path.join(mainFolder, 'js', 'main.js')) },
@@ -46,7 +67,7 @@ app.get('/api/getMainScript', (_req, res) => {
 });
 
 // Only if dbFolder exists
-let dbFolder = path.join(import.meta.dirname, '..', 'sqlite-databases');
+let dbFolder = path.join(dirname, '..', 'sqlite-databases');
 if (fs.existsSync(dbFolder)) {
 
   // Read settings for which SQLite-database to use
