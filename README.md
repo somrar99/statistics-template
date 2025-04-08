@@ -30,7 +30,9 @@ Vi hoppas att du kommer att få mycket nytta av mallen!
 * Skriv sedan **npm start** + ENTER i terminalen för att starta en lokal webbserver på som visar webbplatsen som skapas från mallen.
 
 ### Filstruktur i mallen
-Hej
+>**Viktigt!**
+>
+>Öppna **inte**
 
 
 
