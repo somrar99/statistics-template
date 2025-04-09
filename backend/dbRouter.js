@@ -9,8 +9,6 @@ import neo4j from 'neo4j-driver';
 
 export default async function dbRouter(app, databasesFolder, sqliteFolder) {
 
-  const dbConnections = {};
-
   // read info from databases-in-use.json
   let dbInfoFile = path.join(databasesFolder, 'databases-in-use.json');
   let dbInfos = [];
@@ -48,7 +46,8 @@ export default async function dbRouter(app, databasesFolder, sqliteFolder) {
         let { host, port, user, password, database } = credentials;
         let driver = neo4j.driver(
           'neo4j://' + host + ':' + port,
-          neo4j.auth.basic(user, password)
+          neo4j.auth.basic(user, password),
+          { disableLosslessIntegers: true }
         );
         connections[name] = {
           type: 'neo4j',
@@ -107,7 +106,7 @@ export default async function dbRouter(app, databasesFolder, sqliteFolder) {
         result = result.map(({ properties, labels, identity, elementId }) => ({
           ...properties,
           id: undefined,
-          ids: { id: properties.id.low, identity: identity.low, elementId },
+          ids: { id: properties.id, identity, elementId },
           labels
         }));
       }
