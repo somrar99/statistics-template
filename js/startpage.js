@@ -62,7 +62,7 @@ else {
   tableFromData({
     data: electionResults
       // egenskaper/kolumner kommer i lite konstig ordning från Neo - mappa i trevligare ordning
-      .map(({ ids, roster2018, roster2022, parti, labels }) => ({ ids: ids.identity, roster2018, roster2022, parti, labels }))
+      .map(({ ids, kommun, roster2018, roster2022, parti, labels }) => ({ ids: ids.identity, kommun, roster2018, roster2022, parti, labels }))
   });
   console.log('electionResults from neo4j', electionResults);
 };

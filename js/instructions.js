@@ -5,7 +5,7 @@ addMdToPage(`
 
   ### Instruktioner
   * Det finns mycket du kan undersöka här!
-  * T.ex. röstar folk olika i olika delar av landet. Den exakta geografiska datan gör att du kan arbeta med olika indelningar (väst, öst, norr, söder, mitten).
+  * T.ex. röstar folk olika i olika delar av landet? Den exakta geografiska datan gör att du kan arbeta med olika indelningar (väst, öst, norr, söder, mitten).
   * Du kan även dela in data efter län för lite större områden än kommuner. Då måste du aggregera data (t.ex.) valresultat för alla kommuner som ingår i ett visst län!
   * Finns det skillnader i hur folk röstar i kommuner med hög respektive låg medelinkomst.
   * Finns det några större skillnader i medelålder mellan olika kommuner. Kan detta knytas till större områden? Bor det yngre människor i söder än i norr?
