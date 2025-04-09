@@ -37,7 +37,9 @@ Vi hoppas att du kommer att få mycket nytta av mallen!
 >* Att öppna på fel nivå kan leda till en mängd olika problem, t.ex. med sökvägar som inte fungerar.
 
 #### Fil- och mappstruktur på grundnivå
-![Filstruktur](backend/showDocs/images/file-structure.png)
+![Filstruktur i version 7](backend/showDocs/images/file-structure-v7.png)
+
+>**Viktigt**: En "breaking change" mellan version 6 och 7 är att mappen *sqlite-databases* inte längre finns, istället finns det en mapp som heter *databases* - och nu stöds SQLite, MySQL, MongoDB och Neo4j.
 
 ### Mappen backend
 Mappen backend ska du sällan (om någonsin) behöva fälla ut och öppna filer i.
@@ -76,19 +78,84 @@ Mappen **node_modules** skapas först när du har skrivit **npm install**. Den i
 
 Du ska aldrig behöva öppna denna mapp!
 
-### Mappen sqlite-databases
-![Filstruktur i sqlite-databases-mappen](backend/showDocs/images/file-structure-sqlite-databases-folder.png)
+### Mappen databases
+![Filstruktur i databases-mappen](backend/showDocs/images/file-structure-databases-v7.png)
 
-I mappen **sqlite-databases** lägger du de **SQLite**-databaser du vill använda dig av.  (Behöver bara vara en.)
+I mappen **databases** gör du inställningar för de databaser du vill koppla upp dig mot i filen **databases-in-use.json**. Bland dessa inställningar finns (förutom för SQLite-databaser som är lokala filer) uppgifter om databasanvändare och databaslösenord.
 
-* Upp t.o.m. version 6 (denna version) av mallen kan du bara använda dig av databas från dina JavaScript-filer. I framtida versioner funderar vi på att ändra detta, samt även lägga till möjlighet att koppla sig mot andra typer av databaser än **SQLite**-databaser.
-* Det är viktigt att du berättar för **webbservern** vilken databas du vill använda (se nedan).
+**Obs!**  Sådana inställningar är känslig information och ska **inte** läggas upp på GitHub, särskilt inte i publika repon!
 
-#### Berätta vilken databas du vill använda
-Öppna filen **database-in-use.json** och redigera den, genom att byta namnet inom citattecken till det exakta filnamnet för den databas du vill använda (som ska ligga i samma mapp):
+Just p.g.a. av detta är **databases-in-use.json** git-ignorerad (vilket du ser på att filen är grå i VSC)! Men om filen inte finns, vilket är fallet när du precis laddat ner mallen, så skapas en "ofarlig" version av den, som endast innehåller info om SQLite-databaser första gången du skriver **npm start**!
 
-```json
-"smhi-temp-and-rainfall-malmo.sqlite3"
+Dina SQLite-databasfiler lägger du i undermappen **sqlite-dbs**! Övriga databaser är inte baserade på filer i din projektmapp, utan du kopplar upp dig mot deras respektive databasservrar!
+
+Mallen stöjder **SQLite**, **MySQL**, **MongoDB** och **Neo4j**.
+
+#### Exempel, endast SQLite-databaser, databases-in-use.json
+
+```js
+[
+  {
+    "name": "temp-and-rainfall",
+    "type": "sqlite",
+    "file": "smhi-temp-and-rainfall-malmo.sqlite3"
+  },
+  {
+    "name": "counties-sqlite",
+    "type": "sqlite",
+    "file": "counties.sqlite3"
+  }
+]
+```
+
+#### Exempel, flera olika databastyper
+I detta exempel har vi "maskat" känsliga uppgifter, så den här koden kan du inte använda rakt av. *Om du är i en undervisningssitutation, fråga din lärare om det finns  en version av filen du kan få ta del av (som ev. kopplar upp dig mot molndatabaser)!*
+
+Här kan du se att:
+* Du för alla databaser du registrerar behöver sätta ett namn (mer om [till vad detta namn används hittar du här](#dbquery)) och ange databastyp - tillåtna typer är **sqlite**, **mysql**, **neo4j** samt **mongodb**.
+* Du för **sqlite**-databaser även anger ett filnamn. Detta ska motsvara en fil som ligger i undermappen **sqlite-dbs**.
+* Du för alla andra typer av databaser, anger s.k. **credentials**.
+  * För **mysql** och **neo4j**-databaser består credentials av en *host* (ip-nummer), *port*, användarnamn- och lösenord för databasanvändaren (*user* och *password*), samt databasens namn på databasservern, *database*.
+  * För **mongodb**-databaser fungerar det lite annorlunda, här är den mesta informationen kring uppkopplingen ihopbakad i en s.k. *connectionString* och utöver detta anger du bara databasens namn på databasservern, *database*.
+
+```js
+[
+  {
+    "name": "counties-sqlite",
+    "type": "sqlite",
+    "file": "counties.sqlite3"
+  },
+  {
+    "name": "geo-mysql",
+    "type": "mysql",
+    "credentials": {
+      "host": "35.45.72.107",
+      "port": 9873,
+      "user": "kalle",
+      "password": "anka",
+      "database": "ankeborgs-geografi"
+    }
+  },
+  {
+    "name": "riksdagsval-neo4j",
+    "type": "neo4j",
+    "credentials": {
+      "host": "35.45.72.107",
+      "port": 5421,
+      "user": "kajsa",
+      "password": "anka",
+      "database": "ank-politik"
+    }
+  },
+    {
+    "name": "kommun-info-mongodb",
+    "type": "mongodb",
+    "credentials": {
+      "connectionString": "mongodb+srv://joakimvon:supersecret@atlascluster.stx8vel.mongodb.net/?retryWrites=true&w=majority&appName=StortOchSmatt",
+      "database": "kommun-info"
+    }
+  },
+]
 ```
 
 ### Filer utanför mappar
@@ -217,30 +284,44 @@ let pets = await csvLoad('/csv/people.csv',';');
 ### dbQuery
 
 ```js
-let data = async function dbQuery(selectQuery);
+dbQuery.use(databaseName);
+let data = await dbQuery(dbQuery);
 ```
 
-* Låter dig ställa en valfri SELECT-fråga till din databas. (Se [detta avsnitt](#mappen-sqlite-databases) för hur du kopplar in en databas.)
-* Omvandlar svaret till en array av objects.
+* Med anropet till **dbQuery.use** ställer du in vilken databas du vill prata med. Detta namn måste finnas deklarerat i filen **databases/databases-in-use.json** (se [mer information detta här](#mappen-databases)).
+* Därefter ställer du valfri databasfråga med ett anrop till dbQuery. Viktigt är att du har med **await** före anropet, samt fångar upp svaret i en variabel!
+* Svaret returneras som en array av objects.
+* **Obs!** Du kan endast ställa "läsfrågor" till databasen, inte "skrivfrågor".
+* Formatet frågor ställs i skiljer sig mellan olika databastyper. För **SQL**-baserade databaser skriver du en **SELECT**-fråga som en sträng, för **Neo4j** skriver du en [**Cypher**-baserad](https://neo4j.com/docs/cypher-manual/current/introduction) fråga som en strängl För **MongoDB** skriver du däremot frågan som en serie "chainade" funktionsanrop, precis som [MongoDB:s dokumentation](https://www.mongodb.com/docs/manual/tutorial/query-documents) beskriver hur detta ska göras!
+
+>**Notera:**
+>
+>Om du inte anropar **dbQuery.use** utan ställer frågan direkt med **dbQuery** så kommer den första databas du har deklarerat i filen **databases/databases-in-use.json** att användas!
 
 #### Exempel
-Du har en databas i vilken tabellen/vyn **dataWithMonths** iinnehåller en kolumn **year** och du vill plocka ut alla unika värden:
+Nedan ser du exempel på hur anrop till olika typer av databaser kan se ut.
 
 ```js
-let years = await dbQuery('SELECT DISTINCT year FROM dataWithMonths');
-```
+dbQuery.use('counties-sqlite');
+let countyInfo = await dbQuery('SELECT * FROM countyInfo');
+console.log('countyInfo', countyInfo);
 
-**Notera:**
-Nu har datan formatet:
+dbQuery.use('geo-mysql');
+let geoData = await dbQuery('SELECT * FROM geoData LIMIT 25');
+console.log('geoData from mysql', geoData);
 
-```js
-[ {year: 2021}, {year: 2022}, {year:2023} ]
-```
+dbQuery.use('kommun-info-mongodb');
+let income = await dbQuery.collection('incomeByKommun').find({}).limit(25);
+console.log('income from mongodb', income);
 
-För att omvandla till en array av nummer:
+dbQuery.use('kommun-info-mongodb');
+let ages = await dbQuery.collection('ageByKommun').find({}).limit(25);
+console.log('ages from mongodb', ages);
 
-```js
-years = years.map(x => x.year);
+dbQuery.use('riksdagsval-neo4j');
+let electionResults =
+  await dbQuery('MATCH (n:Partiresultat) RETURN n LIMIT 25');
+console.log('electionResults from neo4j', electionResults);
 ```
 
 ### addToPage

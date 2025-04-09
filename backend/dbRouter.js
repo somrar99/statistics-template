@@ -7,6 +7,14 @@ import mysql from 'mysql2/promise';
 import { MongoClient } from 'mongodb';
 import neo4j from 'neo4j-driver';
 
+// Copy the example-databases-in-use.json file if the databases-in-use-json does not exist
+// (it is git ignored!)
+let dirname = import.meta.dirname;
+let dbInUseFile = path.join(dirname, '..', 'databases', 'databases-in-use.json');
+let exampleDbInUseFile = path.join(dirname, 'example-databases-in-use.json');
+if (!fs.existsSync(dbInUseFile)) { fs.copyFileSync(exampleDbInUseFile, dbInUseFile); }
+
+
 export default async function dbRouter(app, databasesFolder, sqliteFolder) {
 
   // read info from databases-in-use.json
