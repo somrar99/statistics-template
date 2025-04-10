@@ -1,13 +1,13 @@
 addMdToPage(`
   ## Medelinkomst per län, år 2022
-  * Vi vet medelinkomsterna per kommun år 2022 (från MongoDB, **incomeByKommun**), men kan vi ta reda på medelinkomsten per län?
+  * Vi vet medelinkomsterna *per kommun* år 2022 (från MongoDB, **incomeByKommun**), men kan vi ta reda på medelinkomsten *per län*?
   * För att kunna göra detta behöver vi veta vilka kommuner som ingår i ett län. Denna info har vi (från MySQL, **geoInfo**).
   * Men vi behöver även veta hur många som bor i varje kommun... eller?
   * Vid en första anblick ser det svårt ut at lösa detta, med den data vi har tillgång till! Men *om vi utgår ifrån att de som är berättigade att rösta i varje kommun är ungefär lika många procent i alla kommuner inom ett län*, så kan vi räkna ut hur många procent av befolkningen i ett län som bor i en viss stad. Och vet vi detta kan vi sedan räkna ut en medelinkomst för varje län!
   * Vi behöver kombinera data från 3 datakällor! (Se källkoden i **mean-income-by-county-2022.js** för hur vi gör detta.)
   * *Data matchar inte alltid perfekt mellan olika datakällor:* När vi håller på att kombinera datakällorna märker vi att kommunerna Järfälla, Salem, Solna, Sundbyberg och Tyresö saknas i **geoInfo** (vår källa för vilka kommuner som ingår i respektive län) men vi kan enkelt lägga till dessa i Stockholms län manuellt!
   * Hade vi inte kunnat hitta den här datan - medelinkomst per län - enklare? Jo, sannolikt kan vi be SCB:s webbgränssnitt att summera datan från deras undersökningen som vi hämtat datan på kommunnivå från på länsnivå istället! (Och hämtat den därifrån för att lägga in en egen databas.)
-  * MEN: Vad vi övar på är att kunna kombinera data från olika källor, se vilka problem som kan uppkomma och hur man genom att använda data på ett smart sätt kan få transformera den och få ut uppgifter som kräver att vi arbetar aktivt med problemlösning kring att omvandla datan!
+  * MEN: Vad vi övar på är att kunna kombinera data från olika källor, se vilka problem som kan uppkomma och hur man genom att använda datan på ett smart sätt kan transformera den och få åt ut uppgifter som kräver att vi arbetar aktivt med problemlösning kring att omvandla datan!
 `);
 
 // Note:
@@ -94,6 +94,24 @@ counties = counties.map(c => ({
 let meanIncomeByCounty = counties
   .map(({ county, meanIncome }) => ({ county, meanIncome }))
   .toSorted((a, b) => a.meanIncome > b.meanIncome ? -1 : 1);
+
+// and keep a version sorted ascending for the diagram
+let meanIncomeForChart = meanIncomeByCounty
+  .toSorted(((a, b) => a.meanIncome < b.meanIncome ? -1 : 1));
+
+// Display the final data as a a column chart
+drawGoogleChart({
+  type: 'ColumnChart',
+  data: makeChartFriendly(meanIncomeForChart.toSorted(), 'Län', 'TSEK'),
+  options: {
+    height: 500,
+    vAxis: {
+      minValue: 0
+    },
+    chartArea: { left: 50, right: 0 },
+    title: `Medelårsinkomst i Sverige 2022 (TSEK) per län`
+  }
+});
 
 // Display the final data as a table!
 tableFromData({ data: meanIncomeByCounty, columnNames: ['Län', 'Medelårsinkomst 2022 (TSEK)'] });
