@@ -5,9 +5,18 @@ import tableFromData from './libs/tableFromData.js';
 import drawGoogleChart from './libs/drawGoogleChart.js';
 import makeChartFriendly from './libs/makeChartFriendly.js';
 
+
+//let yeardata = await dbQuery(
+//  'SELECT DISTINCT year FROM dataWithMonths'
+//)
+//console.log(yeardata)
+
 let years = (await dbQuery(
   'SELECT DISTINCT year FROM dataWithMonths'
 )).map(x => x.year);
+
+//console.log(years)
+
 
 let currentYear = addDropdown('År', years, 2024);
 

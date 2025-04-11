@@ -9,7 +9,7 @@ let years = (await dbQuery(
 )).map(x => x.year);
 
 let year1 = addDropdown('År 1', years, 1961);
-let year2 = addDropdown('År 2', years, 2024)
+let year2 = addDropdown('År 2', years, 2024);
 
 // if year1 > year2 then switch the years
 if (year1 > year2) {
